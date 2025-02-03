@@ -1,0 +1,470 @@
+{
+    "DeepSeek-R1": {
+        "model_config": {
+            "num_attention_heads": 128,
+            "num_key_value_heads": 128,
+            "hidden_size": 7168,
+            "num_hidden_layers": 61
+        },
+        "parameters": 685000000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "DeepSeek-R1-Distill-Llama-70B": {
+        "model_config": {
+            "num_attention_heads": 64,
+            "num_key_value_heads": 8,
+            "hidden_size": 8192,
+            "num_hidden_layers": 80
+        },
+        "parameters": 70600000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "DeepSeek-R1-Distill-Llama-8B": {
+        "model_config": {
+            "num_attention_heads": 32,
+            "num_key_value_heads": 8,
+            "hidden_size": 4096,
+            "num_hidden_layers": 32
+        },
+        "parameters": 8030000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "DeepSeek-R1-Distill-Qwen-14B": {
+        "model_config": {
+            "num_attention_heads": 40,
+            "num_key_value_heads": 8,
+            "hidden_size": 5120,
+            "num_hidden_layers": 48
+        },
+        "parameters": 14800000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "DeepSeek-R1-Distill-Qwen-32B": {
+        "model_config": {
+            "num_attention_heads": 40,
+            "num_key_value_heads": 8,
+            "hidden_size": 5120,
+            "num_hidden_layers": 64
+        },
+        "parameters": 32800000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Llama-3.1-405B-Instruct": {
+        "model_config": {
+            "num_attention_heads": 128,
+            "num_key_value_heads": 8,
+            "hidden_size": 16384,
+            "num_hidden_layers": 126
+        },
+        "parameters": 406000000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Llama-3.1-70B-Instruct": {
+        "model_config": {
+            "num_attention_heads": 64,
+            "num_key_value_heads": 8,
+            "hidden_size": 8192,
+            "num_hidden_layers": 80
+        },
+        "parameters": 70600000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Llama-3.1-8B-Instruct": {
+        "model_config": {
+            "num_attention_heads": 32,
+            "num_key_value_heads": 8,
+            "hidden_size": 4096,
+            "num_hidden_layers": 32
+        },
+        "parameters": 8030000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Llama-3.2-1B-Instruct": {
+        "model_config": {
+            "num_attention_heads": 32,
+            "num_key_value_heads": 8,
+            "hidden_size": 2048,
+            "num_hidden_layers": 16
+        },
+        "parameters": 1240000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Llama-3.2-3B-Instruct": {
+        "model_config": {
+            "num_attention_heads": 24,
+            "num_key_value_heads": 8,
+            "hidden_size": 3072,
+            "num_hidden_layers": 28
+        },
+        "parameters": 3210000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Llama-3.3-70B-Instruct": {
+        "model_config": {
+            "num_attention_heads": 64,
+            "num_key_value_heads": 8,
+            "hidden_size": 8192,
+            "num_hidden_layers": 80
+        },
+        "parameters": 70600000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "llama3-llava-next-8b-hf": {
+        "model_config": {
+            "num_attention_heads": null,
+            "num_key_value_heads": null,
+            "hidden_size": null,
+            "num_hidden_layers": null
+        },
+        "parameters": 8360000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "llava-next-110b-hf": {
+        "model_config": {
+            "num_attention_heads": null,
+            "num_key_value_heads": null,
+            "hidden_size": null,
+            "num_hidden_layers": null
+        },
+        "parameters": 112000000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "llava-next-72b-hf": {
+        "model_config": {
+            "num_attention_heads": null,
+            "num_key_value_heads": null,
+            "hidden_size": null,
+            "num_hidden_layers": null
+        },
+        "parameters": 72700000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "llava-v1.6-34b-hf": {
+        "model_config": {
+            "num_attention_heads": null,
+            "num_key_value_heads": null,
+            "hidden_size": null,
+            "num_hidden_layers": null
+        },
+        "parameters": 34800000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "llava-v1.6-mistral-7b-hf": {
+        "model_config": {
+            "num_attention_heads": null,
+            "num_key_value_heads": null,
+            "hidden_size": null,
+            "num_hidden_layers": null
+        },
+        "parameters": 7570000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Mistral-7B-v0.3": {
+        "model_config": {
+            "num_attention_heads": 32,
+            "num_key_value_heads": 8,
+            "hidden_size": 4096,
+            "num_hidden_layers": 32
+        },
+        "parameters": 7250000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Mistral-Large-Instruct-2411": {
+        "model_config": {
+            "num_attention_heads": 96,
+            "num_key_value_heads": 8,
+            "hidden_size": 12288,
+            "num_hidden_layers": 88
+        },
+        "parameters": 123000000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Mistral-Small-24B-Instruct-2501": {
+        "model_config": {
+            "num_attention_heads": 32,
+            "num_key_value_heads": 8,
+            "hidden_size": 5120,
+            "num_hidden_layers": 40
+        },
+        "parameters": 23600000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Phi-3-medium-4k-instruct": {
+        "model_config": {
+            "num_attention_heads": 40,
+            "num_key_value_heads": 10,
+            "hidden_size": 5120,
+            "num_hidden_layers": 40
+        },
+        "parameters": 14000000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Phi-3-mini-128k-instruct": {
+        "model_config": {
+            "num_attention_heads": 32,
+            "num_key_value_heads": 32,
+            "hidden_size": 3072,
+            "num_hidden_layers": 32
+        },
+        "parameters": 3820000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Phi-3-small-8k-instruct": {
+        "model_config": {
+            "num_attention_heads": 32,
+            "num_key_value_heads": 8,
+            "hidden_size": 4096,
+            "num_hidden_layers": 32
+        },
+        "parameters": 7390000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "phi-4": {
+        "model_config": {
+            "num_attention_heads": 40,
+            "num_key_value_heads": 10,
+            "hidden_size": 5120,
+            "num_hidden_layers": 40
+        },
+        "parameters": 14700000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Qwen2.5-0.5B-Instruct": {
+        "model_config": {
+            "num_attention_heads": 14,
+            "num_key_value_heads": 2,
+            "hidden_size": 896,
+            "num_hidden_layers": 24
+        },
+        "parameters": 494000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Qwen2.5-1.5B-Instruct": {
+        "model_config": {
+            "num_attention_heads": 12,
+            "num_key_value_heads": 2,
+            "hidden_size": 1536,
+            "num_hidden_layers": 28
+        },
+        "parameters": 1540000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Qwen2.5-14B-Instruct": {
+        "model_config": {
+            "num_attention_heads": 40,
+            "num_key_value_heads": 8,
+            "hidden_size": 5120,
+            "num_hidden_layers": 48
+        },
+        "parameters": 14800000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Qwen2.5-32B-Instruct": {
+        "model_config": {
+            "num_attention_heads": 40,
+            "num_key_value_heads": 8,
+            "hidden_size": 5120,
+            "num_hidden_layers": 64
+        },
+        "parameters": 32800000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Qwen2.5-3B-Instruct": {
+        "model_config": {
+            "num_attention_heads": 16,
+            "num_key_value_heads": 2,
+            "hidden_size": 2048,
+            "num_hidden_layers": 36
+        },
+        "parameters": 3090000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Qwen2.5-72B-Instruct": {
+        "model_config": {
+            "num_attention_heads": 64,
+            "num_key_value_heads": 8,
+            "hidden_size": 8192,
+            "num_hidden_layers": 80
+        },
+        "parameters": 72700000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Qwen2.5-7B-Instruct": {
+        "model_config": {
+            "num_attention_heads": 28,
+            "num_key_value_heads": 4,
+            "hidden_size": 3584,
+            "num_hidden_layers": 28
+        },
+        "parameters": 7620000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Qwen2.5-Coder-0.5B-Instruct": {
+        "model_config": {
+            "num_attention_heads": 14,
+            "num_key_value_heads": 2,
+            "hidden_size": 896,
+            "num_hidden_layers": 24
+        },
+        "parameters": 494000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Qwen2.5-Coder-1.5B-Instruct": {
+        "model_config": {
+            "num_attention_heads": 12,
+            "num_key_value_heads": 2,
+            "hidden_size": 1536,
+            "num_hidden_layers": 28
+        },
+        "parameters": 1540000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Qwen2.5-Coder-32B-Instruct": {
+        "model_config": {
+            "num_attention_heads": 40,
+            "num_key_value_heads": 8,
+            "hidden_size": 5120,
+            "num_hidden_layers": 64
+        },
+        "parameters": 32800000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Qwen2.5-Coder-3B-Instruct": {
+        "model_config": {
+            "num_attention_heads": 16,
+            "num_key_value_heads": 2,
+            "hidden_size": 2048,
+            "num_hidden_layers": 36
+        },
+        "parameters": 3090000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Qwen2.5-Coder-7B-Instruct": {
+        "model_config": {
+            "num_attention_heads": 28,
+            "num_key_value_heads": 4,
+            "hidden_size": 3584,
+            "num_hidden_layers": 28
+        },
+        "parameters": 7620000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    },
+    "Qwen2.5-VL-7B-Instruct": {
+        "model_config": {
+            "num_attention_heads": 28,
+            "num_key_value_heads": 4,
+            "hidden_size": 3584,
+            "num_hidden_layers": 28
+        },
+        "parameters": 8290000000,
+        "quant_level": "fp16",
+        "context_window": 8192,
+        "cache_bit": 16,
+        "cuda_overhead": 2
+    }
+}

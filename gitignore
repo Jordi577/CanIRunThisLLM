@@ -1,0 +1,15 @@
+Kladde/
+.venv/
+.vscode/
+
+# Django #
+*.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
+media
+
+# Scripts #
+*.spec 
+build/
