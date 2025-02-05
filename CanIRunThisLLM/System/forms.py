@@ -6,7 +6,7 @@ def read_llm_choices_mapping(json_file_path):
         data = json.load(file)
     return data
 
-LLM_CHOICES_MAPPING = read_llm_choices_mapping("System\static\llm_map.json")
+LLM_CHOICES_MAPPING = read_llm_choices_mapping("System/static/llm_map.json")
 
 LLM_CHOICES = [("", "Select a model (optional)")] + [
     (key, key.replace("_", " ").title()) for key in LLM_CHOICES_MAPPING.keys()
@@ -28,6 +28,15 @@ class VRAMCalculationForm(forms.Form):
         choices=LLM_CHOICES,
         required=False,
         help_text="Select a predefined model to prepopulate the fields."
+    )
+    # Field for manually entering a predefined model (if not using the extra form)
+    predefined_model_custom = forms.CharField(
+        required=False,
+        help_text="Or enter a predefined model manually."
+    )
+    huggingface_model_path = forms.CharField(
+        required=False,
+        help_text="Enter a Hugging Face model path (e.g., 'meta-llama/Llama-2-7b-chat-hf')."
     )
     parameters_model = forms.FloatField(
         required=True,
@@ -75,7 +84,6 @@ class VRAMCalculationForm(forms.Form):
         required=False,
         help_text="Enter the number of hidden layers"
     )
-    # NEW FIELDS: let the user manually specify RAM and GPU VRAM
     ram = forms.FloatField(
         required=True,
         help_text="Enter your system's RAM in GB (optional if not using the .exe)."
@@ -98,3 +106,41 @@ class VRAMCalculationForm(forms.Form):
             self.fields["num_key_value_heads"].initial = config["model_config"]["num_key_value_heads"]
             self.fields["hidden_size"].initial = config["model_config"]["hidden_size"]
             self.fields["num_hidden_layers"].initial = config["model_config"]["num_hidden_layers"]
+
+
+class SystemInformation(forms.Form):
+    system_ram = forms.IntegerField(
+        required=True,
+        widget=forms.NumberInput(attrs={
+            'type': 'range',
+            'min': '1',
+            'max': '8192',  
+            'step': '1',
+            'oninput': 'ramOutput.value = this.value' 
+        }),
+        help_text="Enter your system's RAM in GB (optional if not using the .exe)."
+    )
+    system_vram = forms.FloatField(
+        required=True,
+        widget=forms.NumberInput(attrs={
+            'type': 'range',
+            'min': '1',
+            'max': '8192',   
+            'step': '1',
+            'oninput': 'vramOutput.value = this.value'
+        }),
+        help_text="Enter your GPU VRAM in GB (optional if not using the .exe)."
+    )
+
+class HuggingfaceModelForm(forms.Form):
+    """
+    This form is used exclusively to accept a manually entered model.
+    """
+    predefined_model_custom = forms.CharField(
+        required=False,
+        help_text="Enter a predefined model manually."
+    )
+    huggingface_model_path = forms.CharField(
+        required=False,
+        help_text="Enter a Hugging Face model path (e.g., 'meta-llama/Llama-2-7b-chat-hf')."
+    )

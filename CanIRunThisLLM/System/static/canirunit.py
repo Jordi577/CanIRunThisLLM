@@ -12,4 +12,3 @@ class CanIRunIt:
             return self.return_types[1]
         else:
             return self.return_types[2]
-

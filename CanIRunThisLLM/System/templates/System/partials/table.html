@@ -1,0 +1,25 @@
+{# templates/System/partials/table.html #}
+<div class="table-wrapper">
+  <table>
+    <thead>
+      <tr>
+        <th>Model \ Quantization</th>
+        {% for col in columns %}
+          <th>{{ col }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for row_data in chart_data %}
+        <tr>
+          <td>{{ row_data.row }}</td>
+          {% for cell in row_data.values %}
+            {% with cell_color=cell.0 ram_value=cell.1 %}
+              <td class="{{ cell_color }}"><b>{{ ram_value }}</b> GB</td>
+            {% endwith %}
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </tbody>        
+  </table>
+</div>

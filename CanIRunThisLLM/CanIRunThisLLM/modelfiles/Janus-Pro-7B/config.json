@@ -1,0 +1,59 @@
+{
+  "aligner_config": {
+    "cls": "MlpProjector",
+    "model_type": "aligner",
+    "params": {
+      "depth": 2,
+      "input_dim": 1024,
+      "n_embed": 4096,
+      "projector_type": "mlp_gelu"
+    }
+  },
+  "gen_aligner_config": {
+    "cls": "MlpProjector",
+    "model_type": "gen_aligner",
+    "params": {
+      "depth": 2,
+      "input_dim": 8,
+      "n_embed": 4096,
+      "projector_type": "mlp_gelu"
+    }
+  },
+  "gen_head_config": {
+    "cls": "vision_head",
+    "model_type": "gen_head",
+    "params": {
+      "image_token_embed": 4096,
+      "image_token_size": 16384,
+      "n_embed": 4096
+    }
+  },
+  "gen_vision_config": {
+    "cls": "VQ-16",
+    "model_type": "gen_vision",
+    "params": {
+      "image_token_size": 16384,
+      "n_embed": 8
+    }
+  },
+  "language_config": {
+    "max_position_embeddings": 16384,
+    "model_type": "llama",
+    "num_hidden_layers": 30,
+    "torch_dtype": "bfloat16",
+    "vocab_size": 102400
+  },
+  "model_type": "multi_modality",
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.33.1",
+  "vision_config": {
+    "cls": "CLIPVisionTower",
+    "model_type": "vision",
+    "params": {
+      "image_size": 384,
+      "model_name": "siglip_large_patch16_384",
+      "select_feature": "same",
+      "select_layer": -1
+    }
+  }
+}

@@ -55,7 +55,7 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 SESSION_COOKIE_NAME = 'myapp_sessionid'  # Default is 'sessionid'
 SESSION_COOKIE_HTTPONLY = True           # Prevents JavaScript from accessing the cookie
 SESSION_COOKIE_SECURE = False            # Set to True in production if using HTTPS
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True             # Session expiry in seconds (default is 2 weeks)
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True     
 
 TEMPLATES = [
     {
