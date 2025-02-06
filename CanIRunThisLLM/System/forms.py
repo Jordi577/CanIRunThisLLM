@@ -125,9 +125,6 @@ class SystemInformation(forms.Form):
         required=True,
         widget=forms.NumberInput(attrs={
             'type': 'range',
-            'min': '1',
-            'max': '8192',  
-            'step': '1',
             'oninput': 'ramOutput.value = this.value' 
         }),
         help_text="Enter your system's RAM in GB (optional if not using the .exe)."
@@ -137,9 +134,6 @@ class SystemInformation(forms.Form):
         required=True,
         widget=forms.NumberInput(attrs={
             'type': 'range',
-            'min': '1',
-            'max': '8192',   
-            'step': '1',
             'oninput': 'vramOutput.value = this.value'
         }),
         help_text="Enter your GPU VRAM in GB (optional if not using the .exe)."
@@ -149,9 +143,6 @@ class SystemInformation(forms.Form):
         required=True,
         widget=forms.NumberInput(attrs={
             'type': 'range',
-            'min': '1',
-            'max': '8192',   
-            'step': '1',
             'oninput': 'vramOutput.value = this.value'
         }),
         help_text="Enter your wished context windows."

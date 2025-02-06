@@ -52,15 +52,16 @@ def update_table_view(request):
                 cache_bit=value["cache_bit"]
             )
 
-            if configuration_mode == "simple":
-                total_vram = vram_calculator.compute_vram_simple()
+            # if configuration_mode == "simple":
+            #     total_vram = vram_calculator.compute_vram_simple()
 
-            elif configuration_mode == "advanced":
-                total_vram = vram_calculator.compute_vram_advanced()
+            # elif configuration_mode == "advanced":
+            #     total_vram = vram_calculator.compute_vram_advanced()
 
-            else:
-                total_vram = vram_calculator.compute_vram_intermediate()
+            # else:
+            #     total_vram = vram_calculator.compute_vram_intermediate()
 
+            total_vram = vram_calculator.compute_vram_advanced()
             checker = CanIRunIt(required_vram=total_vram, system_vram=system_vram, system_ram=system_ram)
             can_run_result = checker.decide()
             row_result["values"].append((colors_map[can_run_result], round(total_vram, 1)))
@@ -78,7 +79,7 @@ def stop_chart_view(request):
     config_mode = request.session.get("configuration_mode", "simple")
     system_vram = request.session.get("vram", 0)
     system_ram = request.session.get("ram", 0)
-    context_window = 8192
+    context_window = request.session.get("context_window", 0)
 
     # Initialize the system form with the current system RAM and VRAM values
     initial_data = {
@@ -290,6 +291,7 @@ def home(request):
                 request.session["configuration_mode"] = configuration_mode
                 request.session["vram"] = manual_vram if manual_vram is not None else 0
                 request.session["ram"] = manual_ram if manual_ram is not None else 0
+                request.session["context_window"] = context_window if context_window is not None else 0
                 return HttpResponseRedirect(reverse("stop_chart"))
 
             # Reinitialize the form with the cleaned data.
