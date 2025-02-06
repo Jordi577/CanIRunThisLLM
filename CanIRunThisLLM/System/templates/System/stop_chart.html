@@ -124,7 +124,7 @@
     }
     /* Additional CSS for sliders */
     .custom-slider {
-      width: 900px; /* Adjust as needed */
+      width: 800px; /* Adjust as needed */
     }
   </style>
 </head>
@@ -153,12 +153,12 @@
                 {% endfor %}
               </tr>
             {% endfor %}
-          </tbody>        
+          </tbody>
         </table>
       </div>
     </div>
   </div>
-  
+
   <div class="footer-form">
     <form method="post">
       {% csrf_token %}
@@ -173,17 +173,17 @@
                  class="custom-slider"
                  value="{{ system_form.system_ram.value|default:'0' }}"
                  min="1" max="256" step="1"
-                 oninput="document.getElementById('system_ram_number').value = this.value; updateTable();">
+                 oninput="document.getElementById('system_ram_number').value = this.value; debouncedUpdateTable();">
           <!-- Number Input (for manual entry) -->
           <input type="number"
                  id="system_ram_number"
                  name="{{ system_form.system_ram.name }}"
                  value="{{ system_form.system_ram.value|default:'0' }}"
                  min="1" step="1"
-                 oninput="document.getElementById('system_ram_slider').value = this.value; updateTable();">
+                 oninput="document.getElementById('system_ram_slider').value = this.value; debouncedUpdateTable();">
         </div>
       </div>
-  
+
       <!-- VRAM Input Section -->
       <div>
         <label for="system_vram_number"><b>VRAM (GB):</b></label>
@@ -194,31 +194,61 @@
                  class="custom-slider"
                  value="{{ system_form.system_vram.value|default:'0' }}"
                  min="1" max="256" step="1"
-                 oninput="document.getElementById('system_vram_number').value = this.value; updateTable();">
+                 oninput="document.getElementById('system_vram_number').value = this.value; debouncedUpdateTable();">
           <!-- Number Input (for manual entry) -->
           <input type="number"
                  id="system_vram_number"
                  name="{{ system_form.system_vram.name }}"
                  value="{{ system_form.system_vram.value|default:'0' }}"
                  min="1" step="1"
-                 oninput="document.getElementById('system_vram_slider').value = this.value; updateTable();">
+                 oninput="document.getElementById('system_vram_slider').value = this.value; debouncedUpdateTable();">
+        </div>
+
+        <!-- Context window Input Section -->
+        <div>
+          <label for="system_context_window_number"><b>Context Window:  </b></label>
+          <div class="slider-container">
+            <!-- Slider Input (with custom width) -->
+            <input type="range"
+                  id="system_context_window_slider"
+                  class="custom-slider"
+                  value="{{ system_form.system_context_window|default:'0' }}"
+                  min="1" max="128000" step="1"
+                  oninput="document.getElementById('system_context_window_number').value = this.value; debouncedUpdateTable();">
+            <!-- Number Input (for manual entry) -->
+            <input type="number"
+                  id="system_context_window_number"
+                  name="{{ system_form.system_context_window }}"
+                  value="{{ system_form.system_context_window.value|default:'0' }}"
+                  min="1" step="1"
+                  oninput="document.getElementById('system_context_window_slider').value = this.value; debouncedUpdateTable();">
         </div>
       </div>
       <br>
       <button type="submit" name="return_home" value="true">Return Home</button>
     </form>
   </div>
-  
+
   <script>
+    // Debounce function: delays the execution until after wait milliseconds have elapsed
+    function debounce(func, wait) {
+      let timeout;
+      return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+      };
+    }
+
     // JavaScript function to call our new update_table endpoint.
     function updateTable() {
       // Get the current slider values.
       var system_ram = document.getElementById('system_ram_slider').value;
       var system_vram = document.getElementById('system_vram_slider').value;
+      var system_context_windows = document.getElementById('system_context_window_slider').value;
       // Construct the URL for the AJAX request using Django's URL tag.
       // (Make sure the URL pattern name is "update_table" as defined above.)
-      var url = "{% url 'update_table' %}?system_ram=" + encodeURIComponent(system_ram) + "&system_vram=" + encodeURIComponent(system_vram);
-      
+      var url = "{% url 'update_table' %}?system_ram=" + encodeURIComponent(system_ram) + "&system_vram=" + encodeURIComponent(system_vram) + "&system_context_window=" + encodeURIComponent(system_context_windows);
+
       // Use fetch() to send the request.
       fetch(url)
         .then(function(response) {
@@ -235,6 +265,10 @@
           console.error('Error updating table:', error);
         });
     }
+
+    // Wrap the updateTable function with debounce
+    const debouncedUpdateTable = debounce(updateTable, 200);
   </script>
+
 </body>
 </html>
