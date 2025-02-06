@@ -70,7 +70,11 @@ def update_table_view(request):
 
     context = {"columns": columns, "chart_data": result}
     html = render_to_string("System/partials/table.html", context)
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 6a511df665a5ef21729837e2b7130f166aec9821
     return HttpResponse(html)
 
 
@@ -79,6 +83,7 @@ def stop_chart_view(request):
     config_mode = request.session.get("configuration_mode", "simple")
     system_vram = request.session.get("vram", 0)
     system_ram = request.session.get("ram", 0)
+<<<<<<< HEAD
     context_window = request.session.get("context_window", 0)
 
     # Initialize the system form with the current system RAM and VRAM values
@@ -88,6 +93,17 @@ def stop_chart_view(request):
         "context_window": context_window
         }
     
+=======
+    context_window = 8192
+
+    # Initialize the system form with the current system RAM and VRAM values
+    initial_data = {
+        "system_ram": system_ram,
+        "system_vram": system_vram,
+        "context_window": context_window
+        }
+
+>>>>>>> 6a511df665a5ef21729837e2b7130f166aec9821
     system_form = SystemInformation(request.POST or None, initial=initial_data)
 
     # If the user requested to return home, redirect immediately
@@ -291,7 +307,10 @@ def home(request):
                 request.session["configuration_mode"] = configuration_mode
                 request.session["vram"] = manual_vram if manual_vram is not None else 0
                 request.session["ram"] = manual_ram if manual_ram is not None else 0
+<<<<<<< HEAD
                 request.session["context_window"] = context_window if context_window is not None else 0
+=======
+>>>>>>> 6a511df665a5ef21729837e2b7130f166aec9821
                 return HttpResponseRedirect(reverse("stop_chart"))
 
             # Reinitialize the form with the cleaned data.

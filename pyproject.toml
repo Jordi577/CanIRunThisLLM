@@ -6,7 +6,7 @@ authors = [
     {name = "Jordinho",email = "Jordi.buscaglia577@gmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.10"
 dependencies = [
     "djangorestframework (>=3.15.2,<4.0.0)",
     "gputil (>=1.4.0,<2.0.0)",

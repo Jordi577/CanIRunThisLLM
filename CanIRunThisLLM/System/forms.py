@@ -7,7 +7,7 @@ def read_llm_choices_mapping(json_file_path):
 
     return data
 
-LLM_CHOICES_MAPPING = read_llm_choices_mapping("System/static/llm_map.json")
+LLM_CHOICES_MAPPING = read_llm_choices_mapping("/home/jordi577/CanIRunThisLLM/CanIRunThisLLM/System/static/llm_map.json")
 
 LLM_CHOICES = [("", "Select a model (optional)")] + [
     (key, key.replace("_", " ").title()) for key in LLM_CHOICES_MAPPING.keys()
@@ -125,7 +125,14 @@ class SystemInformation(forms.Form):
         required=True,
         widget=forms.NumberInput(attrs={
             'type': 'range',
+<<<<<<< HEAD
             'oninput': 'ramOutput.value = this.value' 
+=======
+            'min': '1',
+            'max': '8192',
+            'step': '1',
+            'oninput': 'ramOutput.value = this.value'
+>>>>>>> 6a511df665a5ef21729837e2b7130f166aec9821
         }),
         help_text="Enter your system's RAM in GB (optional if not using the .exe)."
     )
@@ -134,6 +141,12 @@ class SystemInformation(forms.Form):
         required=True,
         widget=forms.NumberInput(attrs={
             'type': 'range',
+<<<<<<< HEAD
+=======
+            'min': '1',
+            'max': '8192',
+            'step': '1',
+>>>>>>> 6a511df665a5ef21729837e2b7130f166aec9821
             'oninput': 'vramOutput.value = this.value'
         }),
         help_text="Enter your GPU VRAM in GB (optional if not using the .exe)."
