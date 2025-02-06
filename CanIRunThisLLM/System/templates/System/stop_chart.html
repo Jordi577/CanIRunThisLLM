@@ -124,7 +124,7 @@
     }
     /* Additional CSS for sliders */
     .custom-slider {
-      width: 900px; /* Adjust as needed */
+      width: 800px; /* Adjust as needed */
     }
   </style>
 </head>
@@ -203,6 +203,26 @@
                  min="1" step="1"
                  oninput="document.getElementById('system_vram_slider').value = this.value; debouncedUpdateTable();">
         </div>
+
+        <!-- Context window Input Section -->
+        <div>
+          <label for="system_context_window_number"><b>Context Window:  </b></label>
+          <div class="slider-container">
+            <!-- Slider Input (with custom width) -->
+            <input type="range"
+                  id="system_context_window_slider"
+                  class="custom-slider"
+                  value="{{ system_form.system_context_window|default:'0' }}"
+                  min="1" max="128000" step="1"
+                  oninput="document.getElementById('system_context_window_number').value = this.value; debouncedUpdateTable();">
+            <!-- Number Input (for manual entry) -->
+            <input type="number"
+                  id="system_context_window_number"
+                  name="{{ system_form.system_context_window }}"
+                  value="{{ system_form.system_context_window.value|default:'0' }}"
+                  min="1" step="1"
+                  oninput="document.getElementById('system_context_window_slider').value = this.value; debouncedUpdateTable();">
+        </div>
       </div>
       <br>
       <button type="submit" name="return_home" value="true">Return Home</button>
@@ -219,29 +239,36 @@
       };
     }
 
+    // JavaScript function to call our new update_table endpoint.
     function updateTable() {
+      // Get the current slider values.
       var system_ram = document.getElementById('system_ram_slider').value;
       var system_vram = document.getElementById('system_vram_slider').value;
-      var url = "{% url 'update_table' %}?system_ram=" + encodeURIComponent(system_ram) +
-                "&system_vram=" + encodeURIComponent(system_vram);
+      var system_context_windows = document.getElementById('system_context_window_slider').value;
+      // Construct the URL for the AJAX request using Django's URL tag.
+      // (Make sure the URL pattern name is "update_table" as defined above.)
+      var url = "{% url 'update_table' %}?system_ram=" + encodeURIComponent(system_ram) + "&system_vram=" + encodeURIComponent(system_vram) + "&system_context_window=" + encodeURIComponent(system_context_windows);
 
+      // Use fetch() to send the request.
       fetch(url)
-        .then(response => {
+        .then(function(response) {
           if (!response.ok) {
             throw new Error('Network response was not ok.');
           }
           return response.text();
         })
-        .then(html => {
+        .then(function(html) {
+          // Replace the table's content with the updated HTML.
           document.getElementById('table-content').innerHTML = html;
         })
-        .catch(error => {
+        .catch(function(error) {
           console.error('Error updating table:', error);
         });
     }
 
     // Wrap the updateTable function with debounce
-    const debouncedUpdateTable = debounce(updateTable, 300);
+    const debouncedUpdateTable = debounce(updateTable, 200);
   </script>
+
 </body>
 </html>
