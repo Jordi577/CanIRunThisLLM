@@ -1,23 +1,28 @@
 # CanYourPcRunThisLLM
 
 ## Introduction
-This web project allows you to estimate the VRAM requirements of local models. If you download the `.exe`, it automatically fetches your PC's data and fills in the forms. If you prefer to enter the data manually, you have that option as well.
+Visit the website: [http://www.canirunthisllm.net/](http://www.canirunthisllm.net/).
+This web project allows you to estimate the VRAM requirements of local models. Enter your VRAM and RAM values to determine if the model fits on your PC. For a more precise calculation, select the advanced calculation method. If known, provide your GPU and RAM bandwidth values to estimate tokens per second.
 
-Visit the website: [http://www.canirunthisllm.net/](http://www.canirunthisllm.net/)
-This web project allows you to estimate the VRAM requirements of local models. If you download the `.exe`, it automatically fetches your PC's data and fills in the forms. If you prefer to enter the data manually, you have that option as well.
+![grafik](https://github.com/user-attachments/assets/60efe7e3-7c78-4997-a519-48385da675b8)
 
 ## Setup Instructions
 
 To run this project locally, follow these steps:
 
-### 1. Install Poetry (if not already installed)
+### 1. Clone the repository 
+```bash
+git clone https://github.com/Jordi577/CanIRunThisLLM.git
+```
+
+### 2. Install Poetry (if not already installed)
 Poetry is a dependency management tool for Python. Install it using:
 
 ```bash
 pip install poetry
 ```
 
-### 2. Configure a Virtual Environment
+### 3. Configure a Virtual Environment
 Ensure that Poetry creates a virtual environment within the project directory:
 
 ```bash
@@ -26,7 +31,7 @@ poetry config virtualenvs.in-project true
 
 This sets up a `.venv` directory inside the repository.
 
-### 3. Install Dependencies
+### 4. Install Dependencies
 Run the following command to install all required dependencies:
 
 ```bash
@@ -40,7 +45,7 @@ Once installed, youâ€™re ready to start working with the project!
 To start the server, navigate to the project directory and run:
 
 ```bash
-cd CanMyPcRunIt
+cd CanIRunThisLLM
 python manage.py runserver
 ```
 
@@ -66,7 +71,7 @@ The VRAM estimation is computed using multiple components related to the modelâ€
      ```
 
 3. **CUDA Buffer**
-   - An overhead buffer is added to account for CUDA memory management, which is set by default to 0.5GB.
+   - An overhead buffer is added to account for CUDA memory management, which is set by default to 0.5 GB.
 
 4. **Total VRAM Calculation**
    - The total VRAM requirement is the sum of the model weights, KV cache, and CUDA overhead.
