@@ -11,11 +11,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-import os
+import os 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -26,7 +25,7 @@ SECRET_KEY = 'django-insecure-$d%wke$7+@b#uej(oc4oukjcbtyk-)lxt0cl5a%sl&3tb)b5x1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["www.canirunthisllm.net"]
+ALLOWED_HOSTS = ["www.canirunthisllm.net", "127.0.0.1"]
 
 
 # Application definition
@@ -37,7 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'System'
+    'System',
+    'mathfilters'
 ]
 
 MIDDLEWARE = [
@@ -55,7 +55,7 @@ ROOT_URLCONF = 'CanIRunThisLLM.urls'
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 SESSION_COOKIE_NAME = 'myapp_sessionid'  # Default is 'sessionid'
 SESSION_COOKIE_HTTPONLY = True           # Prevents JavaScript from accessing the cookie
-SESSION_COOKIE_SECURE = False            # Set to True in production if using HTTPS
+SESSION_COOKIE_SECURE = True            # Set to True in production if using HTTPS
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 TEMPLATES = [
@@ -122,15 +122,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.1/howto/static-files/
+
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Where collectstatic gathers your files for production
 
-# Optionally, you can also define additional static files directories:
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+# Additional directories where Django will search for static files
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
-STATIC_URL = 'static/'
+# Default primary key field type
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
