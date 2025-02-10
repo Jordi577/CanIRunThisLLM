@@ -1,17 +1,17 @@
 from django import forms
+from .models import LLMMapping
 import json
 
-def read_llm_choices_mapping(json_file_path):
-    with open(json_file_path, 'r', encoding='utf-8') as file:
-        data = json.load(file)
-
-    return data
-
-LLM_CHOICES_MAPPING = read_llm_choices_mapping("/home/jordi577/CanIRunThisLLM/CanIRunThisLLM/System/static/llm_map.json")
-
-LLM_CHOICES = [("", "Select a model (optional)")] + [
-    (key, key.replace("_", " ").title()) for key in LLM_CHOICES_MAPPING.keys()
-]
+def get_llm_choices():
+    """
+    Retrieves all LLMMapping entries from the database and creates a list of
+    tuples suitable for a ChoiceField.
+    """
+    llm_queryset = LLMMapping.objects.all()
+    choices = [("", "Select a model (optional)")] + [
+        (llm.name, llm.name.replace("_", " ").title()) for llm in llm_queryset
+    ]
+    return choices
 
 CONFIGURATION_MODE_CHOICES = [
     ('simple', 'Simple'),
@@ -39,11 +39,8 @@ class VRAMCalculationForm(forms.Form):
         help_text="Choose the configuration method."
     )
     
-    selected_llm = forms.ChoiceField(
-        choices=LLM_CHOICES,
-        required=False,
-        help_text="Select a predefined model to prepopulate the fields."
-    )
+    # Use the field name "selected_llm" throughout.
+    selected_llm = forms.ChoiceField(choices=[], required=True)
 
     predefined_model_custom = forms.CharField(
         required=False,
@@ -57,7 +54,8 @@ class VRAMCalculationForm(forms.Form):
 
     parameters_model = forms.FloatField(
         required=True,
-        help_text="Enter the # of parameters in billions (e.g., 7.0 for 7B)"
+        help_text="Enter the # of parameters in billions (e.g., 7.0 for 7B)",
+        min_value=1
     )
 
     quantization_level = forms.ChoiceField(
@@ -68,71 +66,75 @@ class VRAMCalculationForm(forms.Form):
 
     context_window = forms.IntegerField(
         required=False,
-        help_text="Enter the context window size (e.g., 2048)"
+        help_text="Enter the context window size (e.g., 2048)",
+        min_value=1
     )
 
     cache_bit = forms.IntegerField(
         required=False,
-        help_text="Enter the cache bit size (e.g., 16 or 8)"
+        help_text="Enter the cache bit size (e.g., 16 or 8)",
+        min_value=1
     )
 
     num_attention_heads = forms.IntegerField(
         required=False,
-        help_text="Enter the number of attention heads"
+        help_text="Enter the number of attention heads",
+        min_value=1
     )
 
     num_key_value_heads = forms.IntegerField(
         required=False,
-        help_text="Enter the number of key-value heads"
+        help_text="Enter the number of key-value heads",
+        min_value=1
     )
 
     hidden_size = forms.IntegerField(
         required=False,
-        help_text="Enter the hidden size (e.g., 4096)"
+        help_text="Enter the hidden size (e.g., 4096)",
+        min_value=1
     )
 
     num_hidden_layers = forms.IntegerField(
         required=False,
-        help_text="Enter the number of hidden layers"
+        help_text="Enter the number of hidden layers",
+        min_value=1
     )
     
     ram = forms.FloatField(
         required=True,
-        help_text="Enter your system's RAM in GB (optional if not using the .exe)."
+        help_text="Enter your system's RAM in GB (optional if not using the .exe).",
+        min_value=1
     )
 
     gpu_vram = forms.FloatField(
         required=True,
-        help_text="Enter your GPU VRAM in GB (optional if not using the .exe)."
+        help_text="Enter your GPU VRAM in GB (optional if not using the .exe).",
+        min_value=1
+    )
+
+    gpu_bandwidth = forms.FloatField(
+        required=False,
+        help_text="Enter your GPUs bandwidth",
+        min_value=1
+    )
+
+    ram_bandwidth = forms.FloatField(
+        required=False,
+        help_text="Enter your RAMs bandwidth",
+        min_value=1
     )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        selected = self.initial.get("selected_llm") or self.data.get("selected_llm")
-        if selected and selected in LLM_CHOICES_MAPPING:
-            config = LLM_CHOICES_MAPPING[selected]
-            self.fields["parameters_model"].initial = config["parameters"] / 1_000_000_000
-            self.fields["quantization_level"].initial = config["quant_level"]
-            self.fields["context_window"].initial = config["context_window"]
-            self.fields["cache_bit"].initial = config["cache_bit"]
-            self.fields["num_attention_heads"].initial = config["model_config"]["num_attention_heads"]
-            self.fields["num_key_value_heads"].initial = config["model_config"]["num_key_value_heads"]
-            self.fields["hidden_size"].initial = config["model_config"]["hidden_size"]
-            self.fields["num_hidden_layers"].initial = config["model_config"]["num_hidden_layers"]
+        # Update the "selected_llm" field choices using the helper function.
+        self.fields["selected_llm"].choices = get_llm_choices()
 
 class SystemInformation(forms.Form):
     system_ram = forms.IntegerField(
         required=True,
         widget=forms.NumberInput(attrs={
             'type': 'range',
-<<<<<<< HEAD
             'oninput': 'ramOutput.value = this.value' 
-=======
-            'min': '1',
-            'max': '8192',
-            'step': '1',
-            'oninput': 'ramOutput.value = this.value'
->>>>>>> 6a511df665a5ef21729837e2b7130f166aec9821
         }),
         help_text="Enter your system's RAM in GB (optional if not using the .exe)."
     )
@@ -141,15 +143,13 @@ class SystemInformation(forms.Form):
         required=True,
         widget=forms.NumberInput(attrs={
             'type': 'range',
-<<<<<<< HEAD
-=======
             'min': '1',
             'max': '8192',
             'step': '1',
->>>>>>> 6a511df665a5ef21729837e2b7130f166aec9821
             'oninput': 'vramOutput.value = this.value'
         }),
-        help_text="Enter your GPU VRAM in GB (optional if not using the .exe)."
+        help_text="Enter your GPU VRAM in GB (optional if not using the .exe).",
+        min_value=1
     )
 
     context_window = forms.FloatField(
@@ -158,7 +158,8 @@ class SystemInformation(forms.Form):
             'type': 'range',
             'oninput': 'vramOutput.value = this.value'
         }),
-        help_text="Enter your wished context windows."
+        help_text="Enter your wished context window size.",
+        min_value=1
     )
 
 class HuggingfaceModelForm(forms.Form):

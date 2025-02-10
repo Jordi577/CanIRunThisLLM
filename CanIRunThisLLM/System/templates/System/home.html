@@ -1,364 +1,221 @@
+{% load static %}
+{% load mathfilters %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Can Your Computer Run This LLM?</title>
-        <style>
-            /* Basic 2000s style */
-            body {
-            font-family: "Verdana", sans-serif;
-            background-color: #f0f0f0;
-            color: #000;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            }
-            h1 {
-            font-size: 28px;
-            color: #004080;
-            background: #e0e0e0;
-            padding: 20px;
-            border: 2px solid #b0b0b0;
-            margin-top: 50px;
-            font-weight: bold;
-            }
-            b {
-            color: #004080;
-            }
-            .container {
-            background: #ffffff;
-            padding: 40px;
-            border: 3px solid #d0d0d0;
-            width: 80%;
-            max-width: 1300px;
-            margin: 30px auto;
-            box-shadow: 3px 3px 10px #888888;
-            }
-            a {
-            font-size: 16px;
-            text-decoration: none;
-            background-color: #0080ff;
-            color: white;
-            padding: 10px 20px;
-            border: 1px solid #0050b3;
-            border-radius: 5px;
-            font-weight: bold;
-            display: inline-block;
-            margin-top: 20px;
-            }
-            a:hover {
-            background-color: #0050b3;
-            border-color: #003366;
-            }
-            p {
-            text-align: justify;
-            }
-            footer {
-            font-size: 12px;
-            color: #666;
-            margin-top: 40px;
-            padding: 10px;
-            background: #e0e0e0;
-            border-top: 1px solid #b0b0b0;
-            }
-            .row {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-top: 20px;
-            gap: 30px;
-            }
-            .column {
-            flex: 1;
-            margin: 10px;
-            text-align: left;
-            }
-            .column h2 {
-            text-align: center;
-            font-size: 24px;
-            color: #004080;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #b0b0b0;
-            padding-bottom: 10px;
-            }
-            table {
-            table-layout: fixed;
-            width: 100%;
-            }
-            th,
-            td {
-            vertical-align: top;
-            padding: 5px;
-            }
-            th {
-            width: 70%;
-            text-align: left;
-            }
-            td {
-            width: 50%;
-            text-align: right;
-            }
-            input[type="text"],
-            input[type="number"],
-            select {
-            width: 200px;
-            box-sizing: border-box;
-            text-align: center;
-            }
-            .info-list {
-            list-style-type: none;
-            padding: 0;
-            }
-            .info-list li {
-            margin-bottom: 10px;
-            font-size: 16px;
-            }
-            /* Hide advanced fields container by default in simple mode */
-            #advanced-fields {
-            display: none;
-            margin-top: 0;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h1>Can YOUR computer run THIS Large Language Model?</h1>
-            <!-- <br />The .exe automatically gathers essential system information required
-            to run an LLM and displays it on this page.
-            <a href="" download>Under Work</a> -->
-            <!-- <a href="/static/dist/pc_info.exe" download>Download EXE</a> -->
-            <!-- Single form for both columns -->
-            <form method="post">
-                {% csrf_token %}
-                <div class="row">
-                    <!-- Left Column: Model Configuration Form -->
-                    <div class="column">
-                        <h2>Enter Model Configuration</h2>
-                        <p>
-                            It's okay if you don't have all the details about the model. Only
-                            the number of <b>parameters</b> and the
-                            <b>quantization level</b> are essential. However, the estimate may
-                            be less accurate as it relies on assumptions. For a more precise
-                            calculation, refer to the config.json file on the model's Hugging
-                            Face page. Switch from simple to advanced mode for a more detailed
-                            estimation.
-                        </p>
-                        <table>
-                            <tr>
-                                <th>Calculation Mode</th>
-                                <td>{{ form.configuration_mode }}</td>
-                            </tr>
-                            <tr>
-                                <th>Predefined Model</th>
-                                <td>
-                                    {{ form.selected_llm }}
-                                    <!-- New input field added under the Predefined Model widget -->
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Model Parameters</th>
-                                <td>{{ form.parameters_model }}</td>
-                            </tr>
-                            <tr>
-                                <th>Quantization Level</th>
-                                <td>{{ form.quantization_level }}</td>
-                            </tr>
-                        </table>
-                        <!-- Advanced fields container -->
-                        <div id="advanced-fields">
-                            <table>
-                                <tr>
-                                    <th>Context Window</th>
-                                    <td>{{ form.context_window }}</td>
-                                </tr>
-                                <tr>
-                                    <th>KV Cache Quantization</th>
-                                    <td>{{ form.cache_bit }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Number of Attention Heads</th>
-                                    <td>{{ form.num_attention_heads }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Number of Key-Value Heads</th>
-                                    <td>{{ form.num_key_value_heads }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Hidden Size</th>
-                                    <td>{{ form.hidden_size }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Number of Hidden Layers</th>
-                                    <td>{{ form.num_hidden_layers }}</td>
-                                </tr>
-                            </table>
-                            
-                        </div>
-                        <br/>
-
-                        <div style="display: flex; align-items: center; gap: 15px;">
-                            <button type="submit" name="calculate" value="true">
-                              Calculate VRAM
-                            </button>
-                            <button type="submit" name="run_check" value="true">
-                              Can I Run It?
-                            </button>
-                            {% if can_run_result %}
-                              <span text-align: right; style="font-size: 1.2em; 
-                                           color: {% if can_run_result == 1 %}green
-                                                   {% elif can_run_result == 2 %}orange
-                                                   {% elif can_run_result == 3 %}red
-                                                   {% else %}black{% endif %};">
-                                {% if can_run_result == 1 %}
-                                  Yes, you should be able to run it.
-                                {% elif can_run_result == 2 %}
-                                  VRAM and RAM have to be shared, which makes inference much slower.
-                                {% elif can_run_result == 3 %}
-                                  No, you can't.
-                                {% else %}
-                                  No decision.
-                                {% endif %}
-                              </span>
-                            {% endif %}
-                          </div>
-
-                          
-                    </div>
-                    <!-- Right Column: System Information & Manual Memory Inputs -->
-                    <div class="column">
-                        <h2>System Information</h2>
-                        <ul class="info-list" id="sys-info">
-                            {% if system_info %}
-                            <li><strong>Operating System:</strong> {{ system_info.os }}</li>
-                            <li><strong>Processor:</strong> {{ system_info.cpu_name }}</li>
-                            <li><strong>CPU Cores:</strong> {{ system_info.cpu_cores }}</li>
-                            <li><strong>RAM:</strong> {{ system_info.ram }}</li>
-                            {% if system_info.gpus %} {% for gpu in system_info.gpus %}
-                            <li><strong>GPU:</strong> {{ gpu.name }}</li>
-                            <li><strong>VRAM:</strong> {{ gpu.memory_total }}</li>
-                            {% endfor %} {% else %}
-                            <li>No GPU information available.</li>
-                            {% endif %} {% else %}
-                            <p>
-                                If you do not want to download the .exe, please manually enter
-                                your system's <b>RAM</b> and <b>GPU VRAM</b> below.
-                            </p>
-                            {% endif %}
-                            <br />
-                            <table>
-                                <tr>
-                                    <th>System RAM (GB)</th>
-                                    <td>{{ form.ram }}</td>
-                                </tr>
-                                <tr>
-                                    <th>GPU VRAM (GB)</th>
-                                    <td>{{ form.gpu_vram }}</td>
-                                </tr>
-                            </table>
-                        </ul>
-                        <p>
-                            <strong>Click on the icon</strong> to see which models your system can run. 
-                          </p>
-                
-                        {% load static %}
-
-                    <form method="post">
-                    {% csrf_token %}
-                    <button type="submit" name="stop_light_chart" value="true">
-                        <img src="{% static 'heatmap.png' %}" style="width: 100px; height: 48px;">
-                    </button>
-                    </form>
-
-                    
-                    </div>
-                </div>
-                <br />
-
-            </form>
-            {% if vram %}
-            <hr />
-            {% if form.configuration_mode.value == "simple" %}
-            <p>Estimated VRAM Required: <b>{{ vram }} GB</b></p>
-            {% else %}
-            <p>Estimated Model Weights: <b>{{ mode_weight }} GB</b></p>
-            <p>Estimated KV Cache: <b>{{ kv_cache }} GB</b></p>
-            <p>Estimated Cuda Buffer: <b>{{ cuda_buffer }} GB</b></p>
-            <p>Estimated VRAM Required: <b>{{ vram }} GB</b></p>
-            {% endif %} {% endif %}
-            <form method="post">
-                <br />
-                <br />
-                <br />
-                {% csrf_token %}
-                <!-- <p>
-                    You may also specify the model's huggingface path: 
-                    {{ hf_form.huggingface_model_path }}
-                    <button type="submit" name="hf_model" value="true">
-                    Use This Model
-                    </button>
-                </p> -->
-            </form>
-            {% if error %}
-            <p style="color: red">Could not fetch data</p>
-            {% endif %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Can Your Computer Run This LLM?</title>
+    <link rel="stylesheet" href="{% static 'System/css/home_styles.css' %}">
+    <script>
+      window.llmMapping = {{ llm_choices_json|safe }};
+    </script>
+  </head>
+  <body>
+    <h1>Can YOUR computer run THIS Large Language Model?</h1>
+    <form method="post">
+      {% csrf_token %}
+      <div class="card-container">
+        <div class="card model-config">
+          <h2>Enter Model Configuration</h2>
+          <p>
+            It's okay if you don't have all the details about the model. Only the number of
+            <strong>parameters</strong> and the <strong>quantization level</strong> are essential.
+            For a more precise calculation, refer to the config.json file on the model's Hugging Face page.
+            Switch from simple to advanced mode for a more detailed estimation. <br><br>
+          </p>
+          <table>
+            <tr>
+              <th>Calculation Mode</th>
+              <td>{{ form.configuration_mode }}</td>
+            </tr>
+            <tr>
+              <th>Predefined Model</th>
+              <td>{{ form.selected_llm }}</td>
+            </tr>
+            <tr>
+              <th>Model Parameters</th>
+              <td>{{ form.parameters_model }}</td>
+            </tr>
+            <tr>
+              <th>Quantization Level</th>
+              <td>{{ form.quantization_level }}</td>
+            </tr>
+          </table>
+          <div id="advanced-fields">
+            <table>
+              <tr>
+                <th>Context Window</th>
+                <td>{{ form.context_window }}</td>
+              </tr>
+              <tr>
+                <th>KV Cache Quantization</th>
+                <td>{{ form.cache_bit }}</td>
+              </tr>
+              <tr>
+                <th>Number of Attention Heads</th>
+                <td>{{ form.num_attention_heads }}</td>
+              </tr>
+              <tr>
+                <th>Number of Key-Value Heads</th>
+                <td>{{ form.num_key_value_heads }}</td>
+              </tr>
+              <tr>
+                <th>Hidden Size</th>
+                <td>{{ form.hidden_size }}</td>
+              </tr>
+              <tr>
+                <th>Number of Hidden Layers</th>
+                <td>{{ form.num_hidden_layers }}</td>
+              </tr>
+            </table>
+          </div>
+          <div class="button-container">
+            <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+              <button type="submit" name="run_check" value="true">Can I Run It?</button>
+            </div>
+          </div>
         </div>
-        <footer>
-            <h4>
-                &copy; made by Jordi Buscaglia.
-                <br />https://github.com/Jordi577/CanIRunThisLLM
-            </h4>
-        </footer>
-        <!-- JavaScript for toggling advanced fields -->
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-              const modeField = document.getElementById("id_configuration_mode");
-              const advancedContainer = document.getElementById("advanced-fields");
-            
-              function toggleAdvancedFields() {
-                if (modeField.value === "advanced") {
-                  advancedContainer.style.display = "block";
-                } else {
-                  advancedContainer.style.display = "none";
-                }
-              }
-            
-              toggleAdvancedFields();
-              modeField.addEventListener("change", toggleAdvancedFields);
-            });
-        </script>
-        <!-- JavaScript: Prepopulate form fields on model selection -->
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-              const modelSelector = document.getElementById("id_selected_llm");
-              const llmMapping = JSON.parse("{{ llm_choices_json|escapejs }}");
-              if (modelSelector) {
-                modelSelector.addEventListener("change", function () {
-                  const selectedModel = modelSelector.value;
-                  if (selectedModel in llmMapping) {
-                    const config = llmMapping[selectedModel];
-                    document.getElementById("id_parameters_model").value =
-                      config.parameters / 1000000000;
-                    document.getElementById("id_quantization_level").value =
-                      config.quant_level;
-                    document.getElementById("id_context_window").value =
-                      config.context_window;
-                    document.getElementById("id_cache_bit").value = config.cache_bit;
-                    document.getElementById("id_num_attention_heads").value =
-                      config.model_config.num_attention_heads;
-                    document.getElementById("id_num_key_value_heads").value =
-                      config.model_config.num_key_value_heads;
-                    document.getElementById("id_hidden_size").value =
-                      config.model_config.hidden_size;
-                    document.getElementById("id_num_hidden_layers").value =
-                      config.model_config.num_hidden_layers;
-                  }
-                });
-              }
-            });
-        </script>
-        <script type="text/javascript">
-            console.log("data_signal value: {{ data_signal }}");
-        </script>
-    </body>
+        <div class="card system-info">
+          <h2>System Information</h2>
+          <ul class="info-list">
+            {% if system_info %}
+              <li><strong>Operating System:</strong> {{ system_info.os }}</li>
+              <li><strong>Processor:</strong> {{ system_info.cpu_name }}</li>
+              <li><strong>CPU Cores:</strong> {{ system_info.cpu_cores }}</li>
+              <li><strong>RAM:</strong> {{ system_info.ram }}</li>
+              {% if system_info.gpus %}
+                {% for gpu in system_info.gpus %}
+                  <li><strong>GPU:</strong> {{ gpu.name }}</li>
+                  <li><strong>VRAM:</strong> {{ gpu.memory_total }}</li>
+                {% endfor %}
+              {% else %}
+                <li>No GPU information available.</li>
+              {% endif %}
+            {% else %}
+              <p>
+                Enter your <strong>GPU VRAM</strong> and <strong>RAM</strong> details to determine which models are compatible with your system.
+                Enter your <strong>GPUs</strong> and <strong>RAMs</strong>
+                <strong>bandwidth</strong> to calculate the tokens per second. <br><br>
+              </p>
+            {% endif %}
+          </ul>
+          <table>
+            <tr>
+              <th>System RAM (GB)</th>
+              <td>{{ form.ram }}</td>
+            </tr>
+            <tr>
+              <th>RAM Bandwidth (GB/s)</th>
+              <td>{{ form.ram_bandwidth }}</td>
+            </tr>
+            <tr>
+              <th>GPU VRAM (GB)</th>
+              <td>{{ form.gpu_vram }}</td>
+            </tr>
+            <tr>
+              <th>GPU Bandwidth (GB/s)</th>
+              <td>{{ form.gpu_bandwidth }}</td>
+            </tr>
+          </table>
+          <p style="margin-bottom:15px;">
+            <strong>Click on the button below</strong> to see which models your system can run.
+          </p>
+          <br><br>
+          <div class="button-container">
+            <form method="post">
+              {% csrf_token %}
+              <button type="submit" name="stop_light_chart" value="true">
+                Stoplight chart
+              </button>
+            </form>
+          </div>
+        </div>
+        <div class="card results {% if can_run_result == 1 %}result-green{% elif can_run_result == 2 %}result-orange{% elif can_run_result == 3 %}result-red{% else %}result-default{% endif %}">
+          <h2>Results</h2>
+          {% if vram %}
+            {% if can_run_result %}
+              <span style="font-size: 1.2em;
+                           color: {% if can_run_result == 1 %}green{% elif can_run_result == 2 %}orange{% elif can_run_result == 3 %}red{% else %}black{% endif %};">
+                {% if can_run_result == 1 %}
+                  <br>
+                  <p style="color: #4CAF50;"><b>Model fits in the VRAM</b></p>
+                  <br>
+                  <p style="color: black;">Your system meets the necessary requirements and should run the model without issues.</p>
+                  <br>
+                  <p style="color: black;">Memory Required: <strong>{{ vram }} GB</strong></p>
+                  {% if form.configuration_mode.value == "advanced" %}
+                    <br>
+                    <p style="color: black;">Estimated Model Weights: <strong>{{ mode_weight }} GB</strong></p>
+                    <br>
+                    <p style="color: black;">Estimated KV Cache: <strong>{{ kv_cache }} GB</strong></p>
+                    <br>
+                    <p style="color: black;">Estimated Cuda Buffer: <strong>{{ cuda_buffer }} GB</strong></p>
+                    <br>
+                    <p style="color: black;">Estimated VRAM Required: <strong>{{ vram }} GB</strong></p>
+                  {% endif %}
+                  {% if tks %}
+                    <br>
+                    <p style="color: black;">Speed: <strong>{{ tks }} tk/s</strong></p>
+                    <br>
+                  {% endif %}
+                {% elif can_run_result == 2 %}
+                  <br>
+                  <p style="color: #FF7B00;"><b>Partial offload</b></p>
+                  <br>
+                  <p style="color: black;">Because your VRAM and RAM are shared, you may experience slower inference performance.</p>
+                  <br>
+                  <p style="color: black;">Memory Required: <strong>{{ vram }} GB</strong></p>
+                  {% if tks %}
+                    <br>
+                    <p style="color: black;">Speed: <strong>{{ tks }} tk/s</strong></p>
+
+                  {% endif %}
+                  {% if form.configuration_mode.value == "advanced" %}
+                    <br>
+                    <p style="color: black;">Estimated Model Weights: <strong>{{ mode_weight }} GB</strong></p>
+                    <br>
+                    <p style="color: black;">Estimated KV Cache: <strong>{{ kv_cache }} GB</strong></p>
+                    <br>
+                    <p style="color: black;">Estimated Cuda Buffer: <strong>{{ cuda_buffer }} GB</strong></p>
+                    <br>
+                    <p style="color: black;">Estimated VRAM Required: <strong>{{ vram }} GB</strong></p>
+                  {% endif %}
+                  <br>
+                  <p style="color: black;">GPU Share: <strong>{{ 100|sub:offload_ratio }} %</strong></p>
+                  <progress id="gpu-load" class="progress-orange" value="{{ 100|sub:offload_ratio }}" max="100"></progress>
+                  <br><br>
+                  <p style="color: black;">RAM Share: <strong>{{ offload_ratio }} %</strong></p>
+                  <progress id="ram-load" class="progress-orange" value="{{ offload_ratio }}" max="100"></progress>
+
+                {% elif can_run_result == 3 %}
+                  <br>
+                  <p style="color: #E12C2C"><b>Not runnable</b></p>
+                  <br>
+                  <p style="color: black;">The model's memory requirements exceed the capacity of both your system's RAM and GPU.</p>
+                  <br>
+                  <p style="color: black;">Memory Required: <strong>{{ vram }} GB</strong></p>
+                {% else %}
+                  No decision.
+                {% endif %}
+              </span>
+            {% endif %}
+          {% endif %}
+          {% if error %}
+            <p style="color: red;">Could not fetch data</p>
+          {% endif %}
+        </div>
+      </div>
+    </form>
+
+  <!-- Footer -->
+    <footer>
+      <p>&copy; made by Jordi Buscaglia.<br />
+        <a href="https://github.com/Jordi577/CanIRunThisLLM" target="_blank">https://github.com/Jordi577/CanIRunThisLLM</a>
+      </p>
+    </footer>
+
+    <script src="{% static 'System/js/home.js' %}"></script>
+
+  </body>
 </html>

@@ -1,0 +1,142 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-size: 10pt;
+  background-color: #f4f4f9;
+  color: #333;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  margin-bottom: 20px;
+  color: #004080;
+  text-align: center;
+}
+
+.grid-container {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  max-width: 2500px;
+  margin-bottom: 20px;
+  grid-auto-rows: 70px;
+  position: relative;  
+}
+
+.grid-header-cell {
+  background-color: #ffffff;
+  padding: 30px;
+  font-weight: bold;
+  text-align: center;
+  position: sticky;
+  top: 0;        
+  z-index: 2;
+  border-radius: 12px;
+}
+
+.top-left {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 12;
+}
+
+.grid-row-header {
+  background-color: #ffffff;
+  padding: 20px;
+  font-weight: bold;
+  text-align: center;
+  position: sticky;
+  left: 0;       
+  z-index: 3;
+  border-radius: 12px;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.card h2 {
+  margin-bottom: 10px;
+  font-size: 1.5em;
+  color: #004080;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.result-green {
+  background-color: #d4edda;
+}
+
+.result-orange {
+  background-color: #fff3cd;
+}
+
+.result-red {
+  background-color: #f8d7da;
+}
+
+.result-default {
+  background-color: #ffffff;
+}
+
+.footer-form {
+  width: 100%;
+  max-width: 1300px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.footer-form h3 {
+  margin-bottom: 10px;
+}
+
+.footer-form button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.footer-form button:hover {
+  background-color: #0056b3;
+}
+
+.slider-input {
+  margin: 10px 0;
+}
+
+.slider-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.custom-slider {
+  width: 2200px;
+}
+
+.grid-wrapper {
+  overflow: auto;
+  max-height: 65vh;  
+  width: 100%;
+  position: relative;
+}
