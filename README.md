@@ -6,6 +6,10 @@ This web project allows you to estimate the VRAM requirements of local models. E
 
 ![grafik](https://github.com/user-attachments/assets/60efe7e3-7c78-4997-a519-48385da675b8)
 
+Click the Stoplight chart Button to get a more detailed view on which models you can run.
+
+![grafik](https://github.com/user-attachments/assets/f6087f43-ccee-4788-9e7a-9cb34dcd4101)
+
 ## Setup Instructions
 
 To run this project locally, follow these steps:
@@ -51,10 +55,10 @@ python manage.py runserver
 
 This will launch the development server, allowing you to interact with the application locally.
 
-## How does the VRAM get calculated?
+## How does the model's memory footprint get calculated
 The VRAM estimation is computed using multiple components related to the modelâ€™s architecture and configuration. Below are the primary factors considered in the calculation:
 
-1. **Model Weights VRAM**
+1. **Model Weights footprint**
    - The model parameters are multiplied by a quantization factor that depends on the precision level (e.g., fp32, fp16, q8, q4, etc.).
    - Lower precision levels reduce memory usage by storing fewer bits per parameter.
    - The formula used: 
@@ -62,7 +66,7 @@ The VRAM estimation is computed using multiple components related to the modelâ€
      VRAM = Parameters * Bytes_Per_Weight[quant_level]
      ```
 
-2. **KV Cache VRAM**
+2. **KV Cache footprint**
    - The KV (Key-Value) cache is calculated based on the number of attention heads, key-value heads, hidden size, and context window.
    - The formula considers grouped query attention and determines the cache size in GB.
    - The formula used:
@@ -70,8 +74,8 @@ The VRAM estimation is computed using multiple components related to the modelâ€
      KV_Cache = 2 * n_elements * (cache_bit / 8) / 1e9
      ```
 
-3. **CUDA Buffer**
-   - An overhead buffer is added to account for CUDA memory management, which is set by default to 0.5 GB.
+3. **CUDA Buffer footprint**
+   - An overhead buffer is added to account for CUDA memory management, which is set by default to 0.5 GB multiplicated by the amount of GPUs. 
 
 4. **Total VRAM Calculation**
    - The total VRAM requirement is the sum of the model weights, KV cache, and CUDA overhead.
