@@ -117,8 +117,8 @@ select {
 }
 
 button {
-  width: 120px;
-  height: 40px;
+width: 110px;
+  height: 35px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
