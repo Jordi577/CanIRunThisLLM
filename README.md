@@ -1,10 +1,14 @@
 # CanYourPcRunThisLLM
 
 ## Introduction
-This web project allows you to estimate the VRAM requirements of local models. If you download the `.exe`, it automatically fetches your PC's data and fills in the forms. If you prefer to enter the data manually, you have that option as well.
+This web project allows you to estimate the VRAM requirements of local models. Enter your system's VRAM and RAM specifications to determine if it can run the chosen local model. Additionally, provide your GPU and RAM bandwidth information to estimate the tokens processed per second.
 
 Visit the website: [http://www.canirunthisllm.net/](http://www.canirunthisllm.net/)
-This web project allows you to estimate the VRAM requirements of local models. If you download the `.exe`, it automatically fetches your PC's data and fills in the forms. If you prefer to enter the data manually, you have that option as well.
+
+![grafik](https://github.com/user-attachments/assets/a6960415-4d30-4187-a558-5725b211221f)
+
+If you'd like to see a more detailed chart, just press the icon in the System Information card.
+![grafik](https://github.com/user-attachments/assets/be4c64bd-5a3c-41c6-96e6-bdec20f70e11)
 
 ## Setup Instructions
 

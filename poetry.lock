@@ -320,6 +320,18 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-mathfilters"
+version = "1.0.0"
+description = "A set of simple math filters for Django"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "django-mathfilters-1.0.0.tar.gz", hash = "sha256:c9b892ef6dfc893683e75cfd0279c187a601ca68f4684c38f9da44657fb64b07"},
+    {file = "django_mathfilters-1.0.0-py3-none-any.whl", hash = "sha256:64200a21bb249fbf27be601d4bbb788779e09c6e063170c097cd82c4d18ebb83"},
+]
+
+[[package]]
 name = "djangorestframework"
 version = "3.15.2"
 description = "Web APIs for Django, made easy."
@@ -333,6 +345,20 @@ files = [
 
 [package.dependencies]
 django = ">=4.2"
+
+[[package]]
+name = "djhtml"
+version = "3.0.7"
+description = "Django/Jinja template indenter"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "djhtml-3.0.7.tar.gz", hash = "sha256:558c905b092a0c8afcbed27dea2f50aa6eb853a658b309e4e0f2bb378bdf6178"},
+]
+
+[package.extras]
+dev = ["nox", "pre-commit"]
 
 [[package]]
 name = "exceptiongroup"
@@ -958,4 +984,4 @@ h11 = ">=0.9.0,<1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10"
-content-hash = "094c9c24a351957bb2f03bb6855316ef73450263b370ea983877e99bfadfbdac"
+content-hash = "93b25752e4ed15ba3266b2a0b90c132870c2721b7268d5718bddca48dde2b9df"
