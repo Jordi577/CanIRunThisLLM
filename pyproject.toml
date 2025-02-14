@@ -17,7 +17,9 @@ dependencies = [
     "selenium (>=4.28.1,<5.0.0)",
     "django (>=5.1.5,<6.0.0)",
     "bs4 (>=0.0.2,<0.0.3)",
-    "huggingface-hub (>=0.28.1,<0.29.0)"
+    "huggingface-hub (>=0.28.1,<0.29.0)",
+    "djhtml (>=3.0.7,<4.0.0)",
+    "django-mathfilters (>=1.0.0,<2.0.0)"
 ]
 
 
