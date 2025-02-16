@@ -72,11 +72,11 @@ class ModelExtractor:
         model_information = {
             "name": model_name if self.config_available else "Model name is missing",
             "model_config": model_config if self.config_available else "Model configuration is missing",
-            "parameters": check_value("total_size", tensor_data.get("metadata", {})) if self.safe_tensor_available else "Tensor metadata is missing",
+            "parameters": round(check_value("total_size", tensor_data.get("metadata", {}))/2/1e9, 2)*1e9 if self.safe_tensor_available else "No Parameters found",
             "quant_level": "fp16" if self.config_available else "Quantization level is missing",
-            "context_window": 8192 if self.config_available else "Context window information is missing",
+            "context_window": 8192,
             "cache_bit": 16 if self.config_available else "Cache bit information is missing",
-            "cuda_overhead": 2 if self.config_available else "CUDA overhead information is missing",
+            "cuda_overhead": 500,
             "config_available": self.config_available,
             "safe_tensor_available": self.safe_tensor_available,
         }
@@ -84,10 +84,22 @@ class ModelExtractor:
         return model_information
 
 if __name__ == '__main__':
-    model_path = "asif00/bangla-llama-1B-gguf-16bit"
-    website_url = "https://huggingface.co/" + model_path
-    model_name = model_path.split('/')[-1]
-    extractor = ModelExtractor(url=website_url)
-    config_file_path, tensor_file_path = extractor.download_model_config()
-    final_config = extractor.build_final_config(config_file_path, tensor_file_path, model_name)
-    print(json.dumps(final_config, indent=4))
+    model_paths = [
+        "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+        "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+        "google/gemma-2-2b-it",
+        "google/gemma-2-9b-it",
+        "google/gemma-2-27b-it",
+        "mistralai/Mistral-Nemo-Instruct-2407",
+    ]
+
+    for model_path in model_paths:
+        website_url = "https://huggingface.co/" + model_path
+        model_name = model_path.split('/')[-1]
+        extractor = ModelExtractor(url=website_url)
+        config_file_path, tensor_file_path = extractor.download_model_config()
+        final_config = extractor.build_final_config(config_file_path, tensor_file_path, model_name)
+        print(json.dumps(final_config, indent=4))       
+
+        with open("CanIRunThisLLM\System\management\commands\json\llm_database.json", "a") as file:
+             json.dump(final_config, file)

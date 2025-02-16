@@ -1,0 +1,82 @@
+[
+    {
+      "M1": {
+        "Bandwidth": 68.3
+      }
+    },
+    {
+      "M1 Pro": {
+        "Bandwidth": 204.8
+      }
+    },
+    {
+      "M1 Max": {
+        "Bandwidth": 409.6
+      }
+    },
+    {
+      "M1 Ultra": {
+        "Bandwidth": 819.2
+      }
+    },
+    {
+      "M2": {
+        "Bandwidth": 102.4
+      }
+    },
+    {
+      "M2 Pro": {
+        "Bandwidth": 204.8
+      }
+    },
+    {
+      "M2 Max": {
+        "Bandwidth": 409.6
+      }
+    },
+    {
+      "M2 Ultra": {
+        "Bandwidth": 819.2
+      }
+    },
+    {
+      "M3": {
+        "Bandwidth": 102.4
+      }
+    },
+    {
+      "M3 Pro": {
+        "Bandwidth": 153.6
+      }
+    },
+    {
+      "M3 Max": {
+        "10-P-Cores": {
+          "Bandwidth": 307.2
+        },
+        "12-P-Cores": {
+          "Bandwidth": 409.6
+        }
+      }
+    },
+    {
+      "M4": {
+        "Bandwidth": 120
+      }
+    },
+    {
+      "M4 Pro": {
+        "Bandwidth": 273
+      }
+    },
+    {
+      "M4 Max": {
+        "10-P-Cores": {
+          "Bandwidth": 410
+        },
+        "12-P-Cores": {
+          "Bandwidth": 546
+        }
+      }
+    }
+  ]  

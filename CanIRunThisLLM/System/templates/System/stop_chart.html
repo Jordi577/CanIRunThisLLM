@@ -5,119 +5,229 @@
     <meta charset="UTF-8">
     <title>Stop Chart Cards</title>
     <link rel="stylesheet" href="{% static 'System/css/stop_chart_styles.css' %}">
+    <meta name="google-adsense-account" content="ca-pub-9995052187728438">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   </head>
   <body>
     <div class="full-screen-container">
-    <h1>Stop Chart Cards</h1>
-    <div class="grid-wrapper">
-      <div class="grid-container" style="grid-template-columns: 200px repeat({{ columns|length }}, 1fr);">
-
-        <div class="grid-header-cell top-left"></div>
-        {% for col in columns %}
-          <div class="grid-header-cell">
-            <h3>{{ col }}</h3>
-          </div>
-        {% endfor %}
-
-        {% for row in chart_data %}
-          <div class="grid-row-header">
-            <h3>{{ row.row }}</h3>
-          </div>
-          {% for cell in row.values %}
-            <div class="card results {% if cell.0 == 'green' %}result-green{% elif cell.0 == 'yellow' %}result-orange{% elif cell.0 == 'red' %}result-red{% else %}result-default{% endif %}">
-              {% if cell.0 == 'green' %}
-                <p style="color: #4CAF50;"><b>Runnable</b></p>
-                <p style="color: black;">Memory: <strong>{{ cell.1 }} GB</strong></p>
-                {% if cell.2 %}
-                  <p style="color: black;">Speed: <strong>{{ cell.2 }} tk/s</strong></p>
-                {% endif %}
-              {% elif cell.0 == 'yellow' %}
-                <p style="color: #FF7B00;"><b>Partial offload</b></p>
-                <p style="color: black;">Memory: <strong>{{ cell.1 }} GB</strong></p>
-                {% if cell.2 %}
-                  <p style="color: black;">Speed: <strong>{{ cell.2 }} tk/s</strong></p>
-                {% endif %}
-              {% elif cell.0 == 'red' %}
-                <p style="color: #E12C2C;"><b>Not runnable</b></p>
-                <p style="color: black;">Memory: <strong>{{ cell.1 }} GB</strong></p>
-              {% else %}
-                <p>No decision.</p>
-              {% endif %}
+      <h1>Stop Chart Cards</h1>
+      <div class="grid-wrapper">
+        <div class="grid-container" style="grid-template-columns: 200px repeat({{ columns|length }}, 1fr);">
+          <div class="grid-header-cell top-left"></div>
+          {% for col in columns %}
+            <div class="grid-header-cell">
+              <h3>{{ col }}</h3>
             </div>
           {% endfor %}
-        {% endfor %}
-
+          {% for row in chart_data %}
+            <div class="grid-row-header">
+              <h3>{{ row.row }}</h3>
+            </div>
+            {% for cell in row.values %}
+              <div class="card results 
+                {% if cell.0 == 'green' %}
+                  result-green
+                {% elif cell.0 == 'yellow' %}
+                  {% if os_choice == "mac" %}
+                    result-green
+                  {% else %}
+                    result-orange
+                  {% endif %}
+                {% elif cell.0 == 'red' %}
+                  result-red
+                {% else %}
+                  result-default
+                {% endif %}">
+                {% if cell.0 == 'green' %}
+                  <p style="color: #4CAF50;"><b>Runnable</b></p>
+                  <p style="color: black;">Memory: <strong>{{ cell.1 }} GB</strong></p>
+                  {% if cell.2 %}
+                    <p style="color: black;">Speed: <strong>{{ cell.2 }} tk/s</strong></p>
+                  {% endif %}
+                {% elif cell.0 == 'yellow' %}
+                  {% if os_choice == "win" %}
+                    <p style="color: #FF7B00;"><b>Partial offload</b></p>
+                    <p style="color: black;">Memory: <strong>{{ cell.1 }} GB</strong></p>
+                    {% if cell.2 %}
+                      <p style="color: black;">Speed: <strong>{{ cell.2 }} tk/s</strong></p>
+                    {% endif %}
+                  {% elif os_choice == "mac" %}
+                    <p style="color: #4CAF50;"><b>Runnable</b></p>
+                    <p style="color: black;">Memory: <strong>{{ cell.1 }} GB</strong></p>
+                    {% if cell.2 %}
+                      <p style="color: black;">Speed: <strong>{{ cell.2 }} tk/s</strong></p>
+                    {% endif %}
+                  {% endif %}
+                {% elif cell.0 == 'red' %}
+                  <p style="color: #E12C2C;"><b>Not runnable</b></p>
+                  <p style="color: black;">Memory: <strong>{{ cell.1 }} GB</strong></p>
+                {% else %}
+                  <p>No decision.</p>
+                {% endif %}
+              </div>
+            {% endfor %}
+          {% endfor %}
+        </div>
+      </div>
+      <div class="footer-form">
+        {% if os_choice == "win" %}
+          <form method="post">
+            {% csrf_token %}
+            <h3>
+              <br>Adjust the <strong>RAM</strong>, <strong>VRAM</strong>, and <strong>Context Window</strong> sliders to update the chart.
+            </h3>
+            <div class="slider-input">
+              <label for="system_ram_number"></label>
+              <div class="slider-container">
+                <b>RAM (GB):</b>
+                <input type="range"
+                       id="system_ram_slider"
+                       class="custom-slider"
+                       value="{{ system_form.system_ram.value|default:'1' }}"
+                       min="0" max="1028" step="4"
+                       oninput="document.getElementById('system_ram_number').value = this.value; debouncedUpdateGrid();">
+                <input type="number"
+                       id="system_ram_number"
+                       name="{{ system_form.system_ram.name }}"
+                       value="{{ system_form.system_ram.value|default:'1' }}"
+                       min="1" step="1"
+                       oninput="document.getElementById('system_ram_slider').value = this.value; debouncedUpdateGrid();">
+              </div>
+            </div>
+            <div class="slider-input">
+              <label for="system_vram_number"></label>
+              <div class="slider-container">
+                <b>VRAM (GB):</b>
+                <input type="range"
+                       id="system_vram_slider"
+                       class="custom-slider"
+                       value="{{ system_form.system_vram.value|default:'1' }}"
+                       min="0" max="1028" step="4"
+                       oninput="document.getElementById('system_vram_number').value = this.value; debouncedUpdateGrid();">
+                <input type="number"
+                       id="system_vram_number"
+                       name="{{ system_form.system_vram.name }}"
+                       value="{{ system_form.system_vram.value|default:'1' }}"
+                       min="1" step="1"
+                       oninput="document.getElementById('system_vram_slider').value = this.value; debouncedUpdateGrid();">
+              </div>
+            </div>
+            <div class="slider-input">
+              <label for="system_context_window_number"></label>
+              <div class="slider-container">
+                <b>Context Window:</b>
+                <input type="range"
+                       id="system_context_window_slider"
+                       class="custom-slider"
+                       value="{{ system_form.context_window.value|default:'0' }}"
+                       min="1" max="1000000" step="1"
+                       oninput="document.getElementById('system_context_window_number').value = this.value; debouncedUpdateGrid();">
+                <input type="number"
+                       id="system_context_window_number"
+                       name="{{ system_form.system_context_window.name }}"
+                       value="{{ system_form.context_window.value|default:'0' }}"
+                       min="1" step="1"
+                       oninput="document.getElementById('system_context_window_slider').value = this.value; debouncedUpdateGrid();">
+              </div>
+            </div>
+          </form>
+        {% elif os_choice == "mac" %}
+          <form method="post">
+            {% csrf_token %}
+            <h3>
+              <br>Adjust the <strong>RAM</strong>, <strong>M Series Processor</strong>, and <strong>Context Window</strong> sliders to update the chart.
+            </h3>
+            <!-- RAM Slider remains unchanged -->
+            <div class="slider-input">
+              <label for="system_ram_number"></label>
+              <div class="slider-container">
+                <b>RAM (GB):</b>
+                <input type="range"
+                       id="system_ram_slider"
+                       class="custom-slider"
+                       value="{{ system_form.system_ram.value|default:'1' }}"
+                       min="0" max="192" step="8"
+                       oninput="document.getElementById('system_ram_number').value = this.value; debouncedUpdateGrid();">
+                <input type="number"
+                       id="system_ram_number"
+                       name="{{ system_form.system_ram.name }}"
+                       value="{{ system_form.system_ram.value|default:'1' }}"
+                       min="1" step="1"
+                       oninput="document.getElementById('system_ram_slider').value = this.value; debouncedUpdateGrid();">
+              </div>
+            </div>
+            <!-- M Series Processor Slider (replaces the VRAM slider) -->
+            <div class="slider-input">
+              <label for="m_series_processor_slider"></label>
+              <div class="slider-container">
+                <b>M Series Processor:</b>
+                <input type="range"
+                       id="m_series_processor_slider"
+                       class="custom-slider"
+                       value="{{ mac_form.m_series_processor.value|default:'1' }}"
+                       min="1" max="10" step="1"
+                       oninput="updateProcessor(this.value); debouncedUpdateGrid();">
+                <!-- Hidden field to store the processor name -->
+                <input type="hidden"
+                       id="m_series_processor_hidden"
+                       name="{{ mac_form.m_series_processor.name }}"
+                       value="{{ mac_form.m_series_processor.value|default:'M1' }}">
+                <!-- Display the processor name next to the slider -->
+                <span id="m_series_processor_label"></span>
+              </div>
+            </div>
+            <!-- Context Window Slider remains unchanged -->
+            <div class="slider-input">
+              <label for="system_context_window_number"></label>
+              <div class="slider-container">
+                <b>Context Window:</b>
+                <input type="range"
+                       id="system_context_window_slider"
+                       class="custom-slider"
+                       value="{{ system_form.context_window.value|default:'0' }}"
+                       min="1" max="1000000" step="1"
+                       oninput="document.getElementById('system_context_window_number').value = this.value; debouncedUpdateGrid();">
+                <input type="number"
+                       id="system_context_window_number"
+                       name="{{ system_form.system_context_window.name }}"
+                       value="{{ system_form.context_window.value|default:'0' }}"
+                       min="1" step="1"
+                       oninput="document.getElementById('system_context_window_slider').value = this.value; debouncedUpdateGrid();">
+              </div>
+            </div>
+          </form>
+        {% endif %}
+        <form method="post">
+          {% csrf_token %}
+          <div class="os-buttons">
+            <button type="submit" name="mac" value="true" id="mac-btn">
+              <i class="fab fa-apple"></i>
+            </button>
+            <button type="submit" name="windows" value="true" id="windows-btn">
+              <i class="fab fa-windows"></i>
+            </button>
+            <button type="submit" name="return_home" value="true">Return Home</button>
+          </div>
+        </form>
       </div>
     </div>
-
-    <div class="footer-form">
-      <form method="post">
-        {% csrf_token %}
-        <h3>
-          Adjust the <strong>RAM</strong>, <strong>VRAM</strong>, and <strong>Context Window</strong> sliders to update the chart.
-        </h3>
-
-        <div class="slider-input">
-          <label for="system_ram_number"></label>
-          <div class="slider-container">
-            <b>RAM (GB):</b>
-            <input type="range"
-                   id="system_ram_slider"
-                   class="custom-slider"
-                   value="{{ system_form.system_ram.value|default:'1' }}"
-                   min="1" max="256" step="1"
-                   oninput="document.getElementById('system_ram_number').value = this.value; debouncedUpdateGrid();">
-            <input type="number"
-                   id="system_ram_number"
-                   name="{{ system_form.system_ram.name }}"
-                   value="{{ system_form.system_ram.value|default:'1' }}"
-                   min="1" step="1"
-                   oninput="document.getElementById('system_ram_slider').value = this.value; debouncedUpdateGrid();">
-          </div>
-        </div>
-
-        <div class="slider-input">
-          <label for="system_vram_number"></label>
-          <div class="slider-container">
-            <b>VRAM (GB):</b>
-            <input type="range"
-                   id="system_vram_slider"
-                   class="custom-slider"
-                   value="{{ system_form.system_vram.value|default:'1' }}"
-                   min="1" max="256" step="1"
-                   oninput="document.getElementById('system_vram_number').value = this.value; debouncedUpdateGrid();">
-            <input type="number"
-                   id="system_vram_number"
-                   name="{{ system_form.system_vram.name }}"
-                   value="{{ system_form.system_vram.value|default:'1' }}"
-                   min="1" step="1"
-                   oninput="document.getElementById('system_vram_slider').value = this.value; debouncedUpdateGrid();">
-          </div>
-        </div>
-
-        <div class="slider-input">
-          <label for="system_context_window_number"></label>
-          <div class="slider-container">
-            <b>Context Window:</b>
-            <input type="range"
-                   id="system_context_window_slider"
-                   class="custom-slider"
-                   value="{{ system_form.context_window.value|default:'0' }}"
-                   min="1" max="128000" step="1"
-                   oninput="document.getElementById('system_context_window_number').value = this.value; debouncedUpdateGrid();">
-            <input type="number"
-                   id="system_context_window_number"
-                   name="{{ system_form.system_context_window.name }}"
-                   value="{{ system_form.context_window.value|default:'0' }}"
-                   min="1" step="1"
-                   oninput="document.getElementById('system_context_window_slider').value = this.value; debouncedUpdateGrid();">
-          </div>
-        </div>
-        <button type="submit" name="return_home" value="true">Return Home</button>
-      </form>
-    </div>
-  </div>
-
+    <!-- JavaScript: Map slider values to processor names -->
+    <script>
+      // Define the mapping array: adjust names as appropriate.
+      const processors = ["M1", "M1 Pro", "M1 Max", "M2", "M2 Pro", "M2 Max", "M3", "M3 Pro", "M3 Max", "M3 Ultra"];
+      function updateProcessor(value) {
+        const index = parseInt(value, 10) - 1;
+        const processorName = processors[index] || processors[0];
+        // Update the display label.
+        document.getElementById("m_series_processor_label").innerText = processorName;
+        // Update the hidden input so that the processor name is submitted.
+        document.getElementById("m_series_processor_hidden").value = processorName;
+      }
+      document.addEventListener("DOMContentLoaded", function(){
+        const slider = document.getElementById("m_series_processor_slider");
+        updateProcessor(slider.value);
+      });
+    </script>
     <script>
       function debounce(func, wait) {
         let timeout;
@@ -126,14 +236,25 @@
           timeout = setTimeout(() => func.apply(this, args), wait);
         };
       }
-
       function updateGrid() {
         const system_ram = document.getElementById('system_ram_slider').value;
-        const system_vram = document.getElementById('system_vram_slider').value;
         const system_context_window = document.getElementById('system_context_window_slider').value;
-        const url = "{% url 'update_table' %}?system_ram=" + encodeURIComponent(system_ram) +
-        "&system_vram=" + encodeURIComponent(system_vram) +
-        "&system_context_window=" + encodeURIComponent(system_context_window);
+        // For Windows, we have a VRAM slider; for mac, we use the processor slider.
+        let url = "{% url 'update_table' %}?system_ram=" + encodeURIComponent(system_ram) +
+                  "&system_context_window=" + encodeURIComponent(system_context_window);
+        // Check if the processor slider exists (macOS case)
+        const processorHidden = document.getElementById("m_series_processor_hidden");
+        if (processorHidden) {
+          const m_processor = processorHidden.value;
+          url += "&m_processor=" + encodeURIComponent(m_processor);
+        } else {
+          // For Windows, include system_vram if available.
+          const system_vram_slider = document.getElementById('system_vram_slider');
+          if(system_vram_slider){
+            const system_vram = system_vram_slider.value;
+            url += "&system_vram=" + encodeURIComponent(system_vram);
+          }
+        }
         fetch(url)
           .then(response => {
             if (!response.ok) {
@@ -148,7 +269,6 @@
             console.error('Error updating grid:', error);
           });
       }
-
       const debouncedUpdateGrid = debounce(updateGrid, 100);
     </script>
   </body>

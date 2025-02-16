@@ -1,5 +1,6 @@
 {# Remove the outer grid-wrapper and grid-container #}
 {# Only output the inner grid content #}
+
 <!-- Header row -->
 <div class="grid-header-cell top-left"></div>
 {% for col in columns %}
@@ -14,24 +15,50 @@
     <h3>{{ row_data.row }}</h3>
   </div>
   {% for cell in row_data.values %}
-    <div class="card results {% if cell.0 == 'green' %}result-green{% elif cell.0 == 'yellow' %}result-orange{% elif cell.0 == 'red' %}result-red{% else %}result-default{% endif %}">
+    <div class="card results 
+      {% if cell.0 == 'green' %}
+        result-green
+      {% elif cell.0 == 'yellow' %}
+        {% if os_choice == "mac" %}
+          result-green
+        {% else %}
+          result-orange
+        {% endif %}
+      {% elif cell.0 == 'red' %}
+        result-red
+      {% else %}
+        result-default
+      {% endif %}">
+      
       {% if cell.0 == 'green' %}
         <p style="color: #4CAF50;"><b>Runnable</b></p>
         <p style="color: black;">Memory: <strong>{{ cell.1 }} GB</strong></p>
         {% if cell.2 %}
           <p style="color: black;">Speed: <strong>{{ cell.2 }} tk/s</strong></p>
         {% endif %}
+      
       {% elif cell.0 == 'yellow' %}
-        <p style="color: #FF7B00;"><b>Partial offload</b></p>
-        <p style="color: black;"><Memory: <strong>{{ cell.1 }} GB</strong></p>
-        {% if cell.2 %}
-          <p style="color: black;">Speed: <strong>{{ cell.2 }} tk/s</strong></p>
+        {% if os_choice == "win" %}
+          <p style="color: #FF7B00;"><b>Partial offload</b></p>
+          <p style="color: black;">Memory: <strong>{{ cell.1 }} GB</strong></p>
+          {% if cell.2 %}
+            <p style="color: black;">Speed: <strong>{{ cell.2 }} tk/s</strong></p>
+          {% endif %}
+        {% elif os_choice == "mac" %}
+          <p style="color: #4CAF50;"><b>Runnable</b></p>
+          <p style="color: black;">Memory: <strong>{{ cell.1 }} GB</strong></p>
+          {% if cell.2 %}
+            <p style="color: black;">Speed: <strong>{{ cell.2 }} tk/s</strong></p>
+          {% endif %}
         {% endif %}
+      
       {% elif cell.0 == 'red' %}
         <p style="color: #E12C2C;"><b>Not runnable</b></p>
         <p style="color: black;">Memory: <strong>{{ cell.1 }} GB</strong></p>
+      
       {% else %}
         <p>No decision.</p>
+      
       {% endif %}
     </div>
   {% endfor %}

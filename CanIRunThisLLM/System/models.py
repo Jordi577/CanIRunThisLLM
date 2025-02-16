@@ -11,3 +11,7 @@ class LLMMapping(models.Model):
 
     def __str__(self):
         return self.name
+    
+class AppleMSeriesProcessor(models.Model):
+    name = models.CharField(max_length=255, primary_key=True)
+    bandwidth = models.FloatField()

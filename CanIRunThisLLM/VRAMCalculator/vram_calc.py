@@ -20,7 +20,15 @@ class ModelVRAMCalculator:
             "q4": 4/8,      # 4-bit quantization (4x smaller)
             "q3": 3/8,      # 3-bit quantization (~5.3x smaller)
             "q2": 2/8,      # 2-bit quantization (8x smaller)
-            "q1": 1/8       # 1-bit quantization (16x smaller)
+            "q1": 1/8,       # 1-bit quantization (16x smaller)
+            'q3_k_s': 3.4/8,
+            'q3_k_m': 3.5/8,
+            'q3_k_l': 3.9/8,
+            'q4_k_s': 4.3/8,
+            'q4_k_m': 4.6/8,
+            'q5_k_s': 4.8/8,
+            'q5_k_m': 5.5/8,
+            'q6_k': 6.5/8,
         }
 
         if self.quant_level not in bytes_per_weight:
@@ -44,7 +52,7 @@ class ModelVRAMCalculator:
         q = self.bytes_per_weight * self.context_window * head_dim * self.model_config["num_attention_heads"]
         k = self.bytes_per_weight * self.context_window * head_dim * self.model_config["num_key_value_heads"]
         v = self.bytes_per_weight * self.context_window * head_dim * self.model_config["num_key_value_heads"]
-        # under work
+        ####
         # softmax_dropout_mask = self.model_config["num_attention_heads"] * self.context_window
     
     def cuda_buffer(self):

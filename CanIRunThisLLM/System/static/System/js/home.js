@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
     modeField.addEventListener("change", toggleAdvancedFields);
 });
 
-
 document.addEventListener("DOMContentLoaded", function () {
     const modelSelector = document.getElementById("id_selected_llm");
     // Instead of trying to parse a template variable,
@@ -37,3 +36,5 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+
