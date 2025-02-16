@@ -3,7 +3,7 @@ from selenium import webdriver
 import time
 from multiprocessing import Process, freeze_support
 
-API_URL = "http://127.0.0.1:8000/upload/"
+API_URL = "http://127.0.0.1:8000/"
 _already_executed = False
 
 def log(msg):
@@ -93,4 +93,3 @@ def send_data():
 if __name__ == "__main__":
     freeze_support()
     send_data()
-

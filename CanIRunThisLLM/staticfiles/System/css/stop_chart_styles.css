@@ -50,7 +50,7 @@ h1 {
 
 /* Column headers */
 .grid-header-cell {
-  background-color: #f2f2f2;
+  background-color: #ffffff;
   padding: 20px;
   font-weight: bold;
   text-align: center;
@@ -60,9 +60,22 @@ h1 {
   border-radius: 0px;
 }
 
+.card-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr; 
+  gap: 20px;
+  grid-template-areas: 
+    "config system results"
+    "config system info";
+  min-height: 425px;  
+  width: 100%;
+  max-width: 1350px;
+}
+
 /* Row headers */
 .grid-row-header {
-  background-color: #f2f2f2;
+  background-color: #ffffff;
   padding: 20px;
   font-weight: bold;
   text-align: center;
@@ -143,7 +156,7 @@ h1 {
 }
 
 .full-screen-container {
-  width: 95vw;
+  width: 85vw;
   height: 95vh;
   display: flex;
   flex-direction: column;

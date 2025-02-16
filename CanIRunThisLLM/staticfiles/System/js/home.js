@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
     modeField.addEventListener("change", toggleAdvancedFields);
 });
 
-
 document.addEventListener("DOMContentLoaded", function () {
     const modelSelector = document.getElementById("id_selected_llm");
     // Instead of trying to parse a template variable,
@@ -39,79 +38,3 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-  // Suppose you have a way to get system info on the client
-  // For instance, using limited data from the browser:
-  const systemInfo = {
-    userAgent: navigator.userAgent,
-    screenWidth: window.screen.width,
-    screenHeight: window.screen.height,
-    cpuCores: navigator.hardwareConcurrency || 'N/A'
-  };
-
-  // Send data via fetch so it's attached to the browser's session
-  fetch('/upload/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-CSRFToken': '{{ csrf_token }}'
-    },
-    body: JSON.stringify(systemInfo)
-  })
-  .then(response => {
-    if (response.redirected) {
-      window.location.href = response.url;
-    }
-  })
-  .catch(error => console.error('Error sending system info:', error));
-
-  document.addEventListener('DOMContentLoaded', function () {
-    const macBtn = document.getElementById('mac-btn');
-    const windowsBtn = document.getElementById('windows-btn');
-    const osChoice = document.getElementById('os-choice');
-  
-    macBtn.addEventListener('click', function() {
-      windowsBtn.disabled = true;
-      macBtn.classList.add('selected');
-      osChoice.value = 'mac';
-      macBtn.focus();  // Give focus to the clicked button
-    });
-  
-    windowsBtn.addEventListener('click', function() {
-      macBtn.disabled = true;
-      windowsBtn.classList.add('selected');
-      osChoice.value = 'windows';
-      windowsBtn.focus();  // Give focus to the clicked button
-    });
-  });
-  
-document.addEventListener('DOMContentLoaded', function () {
-  const macBtn = document.getElementById('mac-btn');
-  const windowsBtn = document.getElementById('windows-btn');
-  const osChoice = document.getElementById('os-choice');
-  const appleForm = document.getElementById('apple-form');
-  const defaultForm = document.getElementById('default-form');
-
-  macBtn.addEventListener('click', function() {
-  // Update the hidden input
-  osChoice.value = 'mac';
-  // Show the Apple-specific form and hide the default (Windows) form
-  appleForm.style.display = 'block';
-  defaultForm.style.display = 'none';
-  // Add selected class to Mac and remove it from Windows
-  macBtn.classList.add('selected');
-  windowsBtn.classList.remove('selected');
-  macBtn.focus();
-  });
-
-  windowsBtn.addEventListener('click', function() {
-  // Update the hidden input
-  osChoice.value = 'windows';
-  // Show the default (Windows) form and hide the Apple-specific form
-  defaultForm.style.display = 'block';
-  appleForm.style.display = 'none';
-  // Add selected class to Windows and remove it from Mac
-  windowsBtn.classList.add('selected');
-  macBtn.classList.remove('selected');
-  windowsBtn.focus();
-  });
-});
