@@ -123,6 +123,8 @@ def stop_chart_view(request):
     elif "mac" in request.POST:
         # Get unified RAM from session.
         unified_ram = request.session.get("unified_ram", 24)
+        if unified_ram is None:
+            unified_ram = 24
         # Read the processor name from the posted data.
         m_processor = request.POST.get("m_series_processor", "M1")
         try:
@@ -130,12 +132,11 @@ def stop_chart_view(request):
             mac_bandwidth = apple_processor.bandwidth
         except AppleMSeriesProcessor.DoesNotExist:
             mac_bandwidth = None
-
-        # For mac, unified RAM is used as VRAM; no separate system RAM.
-        system_vram = unified_ram
-        system_ram = 0
+       
+        request.session["unified_ram"] = unified_ram
+        system_ram = unified_ram
+        system_vram = 0
         gpu_bandwidth = mac_bandwidth
-        # (Optionally, you can set ram_bandwidth = mac_bandwidth as well)
         ram_bandwidth = mac_bandwidth  
         os_choice = 'mac'
 
@@ -148,10 +149,10 @@ def stop_chart_view(request):
     
     else:
         # Windows branch (unchanged)
-        system_vram = request.session.get("4", 16)
-        system_ram = request.session.get("4", 8)
-        gpu_bandwidth = request.session.get("4", None)
-        ram_bandwidth = request.session.get("4", None)
+        system_vram = request.session.get("system_vram", 16)
+        system_ram = request.session.get("system_ram", 8)
+        gpu_bandwidth = request.session.get("gpu_bandwidth", None)
+        ram_bandwidth = request.session.get("ram_bandwidth", None)
         os_choice = 'win'
 
         print("\n----------------------------")
@@ -162,6 +163,9 @@ def stop_chart_view(request):
         print(f"RAM Bandwidth: {ram_bandwidth}")
         print("----------------------------\n")
 
+    if system_vram is None:
+        system_vram = 16
+
     request.session["os_choice"] = os_choice
     config_mode = request.session.get("configuration_mode", "simple")
     context_window = request.session.get("context_window", 8192)
@@ -171,7 +175,13 @@ def stop_chart_view(request):
         "system_vram": system_vram,
         "context_window": context_window,
     }
-    system_form = SystemInformationForm(request.POST or None, initial=initial_data)
+
+    print(initial_data)
+
+    if 'system_ram' in request.POST:
+        system_form = SystemInformationForm(request.POST, initial=initial_data)
+    else:
+        system_form = SystemInformationForm(initial=initial_data)
 
     quant_levels = ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "fp16", "fp32"]
     colors_map = {1: "green", 2: "yellow", 3: "red"}
@@ -222,6 +232,7 @@ def stop_chart_view(request):
         "system_form": system_form,
         "os_choice": os_choice
     }
+
     return render(request, "System/stop_chart.html", context)
 
 
@@ -392,6 +403,13 @@ def home(request):
             "configuration_mode": configuration_mode,
             "os_choice": os_choice,
         }
+
+        print("\n----------------------------")
+        print(f"Session data:")
+        for key, value in session_data.items():
+            print(f"{key}: {value}")
+        print("----------------------------\n")
+     
 
         for key, value in session_data.items():
             request.session[key] = value

@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-$d%wke$7+@b#uej(oc4oukjcbtyk-)lxt0cl5a%sl&3tb)b5x1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["www.canirunthisllm.net", "127.0.0.1"]
 
@@ -126,7 +126,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Where collectstatic gathers your files for production
+#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Where collectstatic gathers your files for production
 
 # Additional directories where Django will search for static files
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]

@@ -145,13 +145,13 @@
                 <input type="range"
                        id="system_ram_slider"
                        class="custom-slider"
-                       value="{{ system_form.system_ram.value|default:'1' }}"
+                       value="{{ system_form.system_ram.value }}"
                        min="0" max="192" step="8"
                        oninput="document.getElementById('system_ram_number').value = this.value; debouncedUpdateGrid();">
                 <input type="number"
                        id="system_ram_number"
                        name="{{ system_form.system_ram.name }}"
-                       value="{{ system_form.system_ram.value|default:'1' }}"
+                       value="{{ system_form.system_ram.value }}"
                        min="1" step="1"
                        oninput="document.getElementById('system_ram_slider').value = this.value; debouncedUpdateGrid();">
               </div>
@@ -164,14 +164,14 @@
                 <input type="range"
                        id="m_series_processor_slider"
                        class="custom-slider"
-                       value="{{ mac_form.m_series_processor.value|default:'1' }}"
+                       value="{{ mac_form.m_series_processor.value }}"
                        min="1" max="10" step="1"
                        oninput="updateProcessor(this.value); debouncedUpdateGrid();">
                 <!-- Hidden field to store the processor name -->
                 <input type="hidden"
                        id="m_series_processor_hidden"
                        name="{{ mac_form.m_series_processor.name }}"
-                       value="{{ mac_form.m_series_processor.value|default:'M1' }}">
+                       value="{{ mac_form.m_series_processor.value }}">
                 <!-- Display the processor name next to the slider -->
                 <span id="m_series_processor_label"></span>
               </div>
@@ -184,13 +184,13 @@
                 <input type="range"
                        id="system_context_window_slider"
                        class="custom-slider"
-                       value="{{ system_form.context_window.value|default:'0' }}"
+                       value="{{ system_form.context_window.value }}"
                        min="1" max="1000000" step="1"
                        oninput="document.getElementById('system_context_window_number').value = this.value; debouncedUpdateGrid();">
                 <input type="number"
                        id="system_context_window_number"
                        name="{{ system_form.system_context_window.name }}"
-                       value="{{ system_form.context_window.value|default:'0' }}"
+                       value="{{ system_form.context_window.value }}"
                        min="1" step="1"
                        oninput="document.getElementById('system_context_window_slider').value = this.value; debouncedUpdateGrid();">
               </div>

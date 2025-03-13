@@ -16,8 +16,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener("DOMContentLoaded", function () {
     const modelSelector = document.getElementById("id_selected_llm");
-    // Instead of trying to parse a template variable,
-    // use the global variable defined in your HTML:
     const llmMapping = window.llmMapping;
     if (modelSelector) {
         modelSelector.addEventListener("change", function () {
