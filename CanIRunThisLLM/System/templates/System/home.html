@@ -46,13 +46,13 @@
               <th>Quantization Level</th>
               <td>{{ model_form.quantization_level }}</td>
             </tr>
-            <tr>
-              <th>Context Window</th>
-              <td>{{ model_form.context_window }}</td>
-            </tr>
           </table>
           <div id="advanced-fields">
             <table>
+              <tr>
+                <th>Context Window</th>
+                <td>{{ model_form.context_window }}</td>
+              </tr>
               <tr>
                 <th>KV Cache Quantization</th>
                 <td>{{ model_form.cache_bit }}</td>
