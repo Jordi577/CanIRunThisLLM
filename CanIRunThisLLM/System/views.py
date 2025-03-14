@@ -296,7 +296,7 @@ def home(request):
     tks = None
     offload_ratio = None
 
-    mac_processors = AppleMSeriesProcessor.objects.all()
+    mac_processors = AppleMSeriesProcessor.objects.order_by('name')
     processor_mapping = {proc.name: proc.bandwidth for proc in mac_processors}
 
     # Process the POST request without using cleaned_data.
@@ -484,7 +484,6 @@ def home(request):
             'processor_mapping': json.dumps(processor_mapping) 
 
         })
-
         return render(request, 'System/home.html', context)
 
     return render(request, 'System/home.html', context)

@@ -1,7 +1,3 @@
-################################################################################################
-########### Date: 04.02.2025, 18:42 | Author: Jordi Buscaglia | Location: Hamburg ##############
-################################################################################################
-
 from django import forms
 from .models import LLMMapping, AppleMSeriesProcessor
 
@@ -36,10 +32,6 @@ QUANTIZATION_CHOICES = [
 
 
 def get_llm_choices() -> list[tuple[str, str]]:
-    """
-    Retrieves all LLMMapping entries from the database and creates a list of
-    tuples suitable for a ChoiceField. The first tuple is a default prompt.
-    """
     llm_queryset = LLMMapping.objects.all()
     choices = [("", "Select a model (optional)")] + [
         (llm.name, llm.name.replace("_", " ").title()) for llm in llm_queryset
@@ -49,10 +41,6 @@ def get_llm_choices() -> list[tuple[str, str]]:
 
 
 def get_m_series_processors() -> list[tuple[str, str]]:
-    """
-    Retrieves all AppleMSeriesProcessor entries from the database and creates a list of
-    tuples suitable for a ChoiceField. The first tuple is a default prompt.
-    """
     m_series = AppleMSeriesProcessor.objects.all()
     choices = [("", "Select a model (optional)")] + [
         (m.name, m.name.replace("_", " ").title()) for m in m_series
@@ -69,7 +57,6 @@ class ModelConfigurationForm(forms.Form):
         help_text="Choose the configuration method."
     )
 
-    # Now using ModelChoiceField with a sorted queryset
     selected_llm = forms.ModelChoiceField(
         queryset=LLMMapping.objects.order_by('name'),
         required=False,
@@ -138,42 +125,36 @@ class ModelConfigurationForm(forms.Form):
 
 
 class WindowsSystemInformationForm(forms.Form):
-    """
-    Form for Windows-specific system information.
-    Contains fields for GPU VRAM, system RAM, GPU bandwidth, and RAM bandwidth.
-    """
-
-    windows_gpu_vram = forms.IntegerField(
+    windows_gpu_vram = forms.DecimalField(
         required=True,
         help_text="Enter your GPU VRAM in GB (optional if not using the .exe).",
+        decimal_places=2,
         min_value=1
     )
 
-    windows_ram = forms.IntegerField(
+    windows_ram = forms.DecimalField(
         required=True,
         help_text="Enter your system RAM in GB (optional if not using the .exe).",
+        decimal_places=2,
         min_value=1
     )
 
-    windows_gpu_bandwidth = forms.FloatField(
+    windows_gpu_bandwidth = forms.DecimalField(
         required=False,
         help_text="Enter your GPU's bandwidth.",
+        decimal_places=2,
         min_value=1
     )
 
-    windows_ram_bandwidth = forms.FloatField(
+    windows_ram_bandwidth = forms.DecimalField(
         required=False,
         help_text="Enter your RAM's bandwidth.",
+        decimal_places=2,
         min_value=1
     )
 
 
 class MacOsSystemInformationForm(forms.Form):
-    """
-    Form for macOS-specific system information.
-    In a unified memory system, the system's RAM is shared with the GPU.
-    """
-
     macos_unified_ram = forms.IntegerField(
         required=True,
         help_text="Enter your system's RAM in GB (used as unified memory).",
@@ -188,20 +169,18 @@ class MacOsSystemInformationForm(forms.Form):
 
 
 class SystemInformationForm(forms.Form):
-    """
-    Generic system information form.
-    Uses range sliders (via NumberInput widgets) to capture system RAM, GPU VRAM, and context window.
-    """
-    system_ram = forms.IntegerField(
+    system_ram = forms.DecimalField(
         required=True,
         widget=forms.NumberInput(attrs={
             'type': 'range',
             'oninput': 'ramOutput.value = this.value'
         }),
         help_text="Enter your system's RAM in GB.",
+        min_value=1,
+        decimal_places=2,
     )
 
-    system_vram = forms.FloatField(
+    system_vram = forms.DecimalField(
         required=True,
         widget=forms.NumberInput(attrs={
             'type': 'range',
@@ -211,25 +190,23 @@ class SystemInformationForm(forms.Form):
             'oninput': 'vramOutput.value = this.value'
         }),
         help_text="Enter your GPU VRAM in GB.",
-        min_value=1
+        min_value=1,
+        decimal_places=2
     )
 
-    context_window = forms.FloatField(
+    context_window = forms.DecimalField(
         required=True,
         widget=forms.NumberInput(attrs={
             'type': 'range',
             'oninput': 'vramOutput.value = this.value'
         }),
         help_text="Enter your desired context window size.",
-        min_value=1
+        min_value=1,
+        decimal_places=2
     )
 
 
 class HuggingfaceModelForm(forms.Form):
-    """
-    Form to allow the user to enter either a custom predefined model
-    or a Hugging Face model path.
-    """
     predefined_model_custom = forms.CharField(
         required=False,
         help_text="Enter a predefined model manually."
